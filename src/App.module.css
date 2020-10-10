@@ -1,9 +1,24 @@
 .container {
     width: 100%;
     height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
     font-size: 1rem;
+    display: grid;
+    grid-template-rows: 1fr;
+    grid-template-columns: minmax(200px, auto) 1fr;
+    grid-template-areas: "sidebar main";
+}
+
+.flexContainer {
+    display: flex;
+    justify-content: space-evenly;
+    margin: 15px;
+}
+
+.menu {
+    border-right: 1px solid rgb(128, 128, 128, 0.5);
+    grid-area: sidebar;
+}
+
+.main {
+    grid-area: main;
 }
