@@ -21,6 +21,7 @@ yarn start
 ```
 
 4. Log into dhis2
+
 Server: http://localhost:9999/
 Username: admin
 password: district
