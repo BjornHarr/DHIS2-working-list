@@ -12,6 +12,9 @@ const query = {
     },
     orgUnits: {
         resource: "organisationUnits",
+        params: {
+            paging: false
+        }
     },
     entityAttributes: {
         resource: "trackedEntityAttributes",
@@ -35,6 +38,7 @@ const MyApp = () => {
 
             ) : (
                     <>
+                        {console.log("ORGUNITES: ", data.orgUnits)}
                         <nav className={styles.menu} data-test-id="menu">
                             <MenuSectionHeader label={i18n.t('Menu')} />
                             <Menu>

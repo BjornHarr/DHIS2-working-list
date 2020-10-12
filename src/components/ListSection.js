@@ -7,7 +7,7 @@ import styles from '../App.module.css';
 
 const ListSection = (props) => {
     const { data } = props
-    const dataType = [Object.keys(data)[1]][0]
+    const dataType = Object.keys(data)
     console.log(data)
     console.log("DATATYPE: ", dataType);
     const [selected, setSelected] = useState()
@@ -25,7 +25,7 @@ const ListSection = (props) => {
             <div>
                 <h2>Details</h2>
                 {selected && (
-                    <DetailView data={selected} />
+                    <DetailView orgUnit={selected} />
                 )}
             </div>
         </div>

@@ -1,4 +1,6 @@
 import React from 'react';
+import { useDataQuery } from "@dhis2/app-runtime"
+
 import {
     Table,
     TableHead,
@@ -6,55 +8,75 @@ import {
     TableCellHead,
     TableCell,
     TableRow,
-    TableBody
+    TableBody,
+    CircularLoader
 } from '@dhis2/ui';
 
 
 const DetailView = (props) => {
-    const { data } = props
+    const { orgUnit } = props
+    const query = {
+        entityInstances: {
+            resource: "trackedEntityInstances",
+            params: {
+                ou: orgUnit.id
+            }
+        },
+    }
+
+    const { loading, error, data } = useDataQuery(query)
+
 
     return (
-        <Table>
-            <TableHead>
-                <TableRowHead>
-                    <TableCellHead>
-                        Key
+        <>
+            {loading ? (
+                <CircularLoader dataTest="dhis2-uicore-circularloader" />
+
+            ) : (
+                    <Table>
+                        <TableHead>
+                            <TableRowHead>
+                                <TableCellHead>
+                                    Key
       </TableCellHead>
-                    <TableCellHead>
-                        Value
+                                <TableCellHead>
+                                    Value
       </TableCellHead>
-                </TableRowHead>
-            </TableHead>
-            <TableBody>
-                <TableRow>
-                    <TableCell>
-                        id
+                            </TableRowHead>
+                        </TableHead>
+                        <TableBody>
+                            <TableRow>
+                                <TableCell>
+                                    id
                     </TableCell>
-                    <TableCell dataTest="details-id">
-                        {data.id}
-                    </TableCell>
-                </TableRow>
+                                <TableCell dataTest="details-id">
+                                    {data.id}
+                                    {console.log(data)}
+                                </TableCell>
+                            </TableRow>
 
-                <TableRow>
-                    <TableCell>
-                        name
+                            <TableRow>
+                                <TableCell>
+                                    name
                     </TableCell>
-                    <TableCell dataTest="details-name">
-                        {data.name}
-                    </TableCell>
-                </TableRow>
+                                <TableCell dataTest="details-name">
+                                    {data.name}
+                                </TableCell>
+                            </TableRow>
 
-                <TableRow>
-                    <TableCell>
-                        created
+                            <TableRow>
+                                <TableCell>
+                                    created
                     </TableCell>
-                    <TableCell dataTest="details-created">
-                        {data.created}
-                    </TableCell>
-                </TableRow>
+                                <TableCell dataTest="details-created">
+                                    {data.created}
+                                </TableCell>
+                            </TableRow>
 
-            </TableBody>
-        </Table>
+                        </TableBody>
+                    </Table>
+                )}
+        </>
     )
 
 };
