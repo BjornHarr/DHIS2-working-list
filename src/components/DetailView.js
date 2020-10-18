@@ -12,42 +12,28 @@ import {
     Button
 } from '@dhis2/ui';
 
-const query = {
-    entityInstances: {
-        resource: "trackedEntityInstances",
-        params: {
-            ou: "iVgNipWEgvE",
-            program: "uYjxkTbwRNf"
-        }
-    },
-}
-
 const DetailView = (props) => {
-    const { program } = props
+    const { entityInstances, program } = props
+    const [entityValues, setEntityValues] = useState([])
+    const dataType = Object.keys(entityInstances)
+
+    useEffect(() => {
+        reconstructAttributes(entityInstances)
+    }, [entityInstances])
+
     const reconstructAttributes = (entityInstances) => {
         let entities = []
         let tmp = {}
-        entityInstances.trackedEntityInstances.map(instance => {
+        entityInstances[dataType].map(instance => {
             instance.attributes.map(attribute => {
                 tmp[attribute.code] = attribute.value
             })
             tmp.trackedEntityInstance = instance.trackedEntityInstance
             entities.push(tmp)
-            tmp = {}
+            tmp = []
         })
-
         setEntityValues(entities)
     }
-    const [entityValues, setEntityValues] = useState([])
-    const { loading, error, data } = useDataQuery(query, {
-        variables: {
-            program: program
-        },
-        onComplete: (res) => reconstructAttributes(res.entityInstances),
-    })
-
-
-
 
     return (
         <Table>
@@ -71,7 +57,6 @@ const DetailView = (props) => {
                 </TableRowHead>
             </TableHead>
             <TableBody>
-                {console.log("data: ", data)}
                 {entityValues.map(entity => (
                     <TableRow onClick={() => console.log("CLICKED")}>
                         <TableCell dataTest="details-first-name">
@@ -87,11 +72,10 @@ const DetailView = (props) => {
                             {entity.patinfo_sex}
                         </TableCell>
                         <TableCell dataTest="details-first-name">
-                            <a href={`http://localhost:9999/hmis/dhis-web-tracker-capture/index.html#/dashboard?tei=${entity.trackedEntityInstance}&program=uYjxkTbwRNf&ou=iVgNipWEgvE`}>
+                            <a href={`http://localhost:9999/hmis/dhis-web-tracker-capture/index.html#/dashboard?tei=${entity.trackedEntityInstance}&program=${program}&ou=iVgNipWEgvE`}>
                                 <Button
                                     dataTest="dhis2-uicore-button"
                                     name="Primary button"
-                                    onClick={function logger(_ref) { var name = _ref.name, value = _ref.value; return console.info("".concat(name, ": ").concat(value)) }}
                                     primary
                                     type="button"
                                     value="default"

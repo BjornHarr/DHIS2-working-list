@@ -11,23 +11,35 @@ const query = {
     entityAttributes: {
         resource: "trackedEntityAttributes",
     },
-    programs: {
-        resource: "programs",
-        params: {
-            fields: ["id", "displayName"],
-            paging: false,
-        }
+    indexCases: {
+        resource: "trackedEntityInstances",
+        params: ({ indexCases }) => ({
+            ou: "iVgNipWEgvE",
+            program: indexCases
+        })
+    },
+    contacts: {
+        resource: "trackedEntityInstances",
+        params: ({ contacts }) => ({
+            ou: "iVgNipWEgvE",
+            program: contacts
+        })
     }
-
 }
 
 const MyApp = () => {
-    const { loading, error, data } = useDataQuery(query)
-    const [selected, setSelected] = useState()
     const programs = {
         indexCases: "uYjxkTbwRNf",
         contacts: "DM9n1bUw8W8"
     }
+    const { loading, error, data } = useDataQuery(query, {
+        variables: {
+            indexCases: programs.indexCases,
+            contacts: programs.contacts
+        },
+    })
+    const [selected, setSelected] = useState()
+
 
     return (
         <div className={styles.container}>
@@ -36,17 +48,16 @@ const MyApp = () => {
 
             ) : (
                     <>
-                        {console.log("ORGUNITES: ", data)}
                         <nav className={styles.menu} data-test-id="menu">
                             <MenuSectionHeader label={i18n.t('Menu')} />
                             <Menu>
-                                <MenuItem label={i18n.t('Index Cases')} dataTest="menu-cases" onClick={() => setSelected(programs.indexCases)} />
-                                <MenuItem label={i18n.t('Contacts')} dataTest="menu-contacts" onClick={() => setSelected(programs.contacts)} />
+                                <MenuItem label={i18n.t('Index Cases')} dataTest="menu-cases" onClick={() => setSelected({ entityInstances: data.indexCases, program: programs.indexCases })} />
+                                <MenuItem label={i18n.t('Contacts')} dataTest="menu-contacts" onClick={() => setSelected({ entityInstances: data.contacts, program: programs.contacts })} />
                             </Menu>
                         </nav>
                         <main className={styles.main}>
                             {selected && (
-                                <DetailView program={selected} />
+                                <DetailView entityInstances={selected.entityInstances} program={selected.program} />
                             )}
                         </main>
                     </>
