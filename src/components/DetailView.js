@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDataQuery } from "@dhis2/app-runtime"
 
 import {
@@ -14,69 +14,76 @@ import {
 
 
 const DetailView = (props) => {
-    const { orgUnit } = props
-    const query = {
-        entityInstances: {
-            resource: "trackedEntityInstances",
-            params: {
-                ou: orgUnit.id
-            }
-        },
+    const { entityInstances } = props
+    const [entityValues, setEntityValues] = useState([])
+    const dataType = Object.keys(entityInstances)
+
+    useEffect(() => {
+        reconstructAttributes(entityInstances)
+    }, [entityInstances])
+
+    const reconstructAttributes = (entityInstances) => {
+        let entities = []
+        let tmp = {}
+        entityInstances[dataType].map(instance => {
+            instance.attributes.map(attribute => {
+                tmp[attribute.code] = attribute.value
+            })
+            tmp.trackedEntityInstance = instance.trackedEntityInstance
+            entities.push(tmp)
+            tmp = []
+        })
+
+        setEntityValues(entities)
     }
 
-    const { loading, error, data } = useDataQuery(query)
-
-
     return (
-        <>
-            {loading ? (
-                <CircularLoader dataTest="dhis2-uicore-circularloader" />
-
-            ) : (
-                    <Table>
-                        <TableHead>
-                            <TableRowHead>
-                                <TableCellHead>
-                                    Key
+        <Table>
+            <TableHead>
+                <TableRowHead>
+                    <TableCellHead>
+                        First name
       </TableCellHead>
-                                <TableCellHead>
-                                    Value
+                    <TableCellHead>
+                        Surname
       </TableCellHead>
-                            </TableRowHead>
-                        </TableHead>
-                        <TableBody>
-                            <TableRow>
-                                <TableCell>
-                                    id
-                    </TableCell>
-                                <TableCell dataTest="details-id">
-                                    {data.id}
-                                    {console.log(data)}
-                                </TableCell>
-                            </TableRow>
+                    <TableCellHead>
+                        Date of birth
+      </TableCellHead>
+                    <TableCellHead>
+                        Sex
+      </TableCellHead>
+                    <TableCellHead>
+                        Details
+      </TableCellHead>
+                </TableRowHead>
+            </TableHead>
+            <TableBody>
+                {console.log(entityValues)}
+                {entityValues.map(entity => (
+                    <TableRow>
+                        <TableCell dataTest="details-first-name">
+                            {entity.first_name}
+                        </TableCell>
+                        <TableCell dataTest="details-first-name">
+                            {entity.surname}
+                        </TableCell>
+                        <TableCell dataTest="details-first-name">
+                            {entity.patinfo_ageonsetunit}
+                        </TableCell>
+                        <TableCell dataTest="details-first-name">
+                            {entity.patinfo_sex}
+                        </TableCell>
+                        <TableCell dataTest="details-first-name">
+                            Button
+                        </TableCell>
+                    </TableRow>
 
-                            <TableRow>
-                                <TableCell>
-                                    name
-                    </TableCell>
-                                <TableCell dataTest="details-name">
-                                    {data.name}
-                                </TableCell>
-                            </TableRow>
+                ))
+                }
+            </TableBody>
+        </Table >
 
-                            <TableRow>
-                                <TableCell>
-                                    created
-                    </TableCell>
-                                <TableCell dataTest="details-created">
-                                    {data.created}
-                                </TableCell>
-                            </TableRow>
-
-                        </TableBody>
-                    </Table>
-                )}
-        </>
     )
 
 };

@@ -4,26 +4,19 @@ import { Menu, MenuItem, MenuSectionHeader, CircularLoader } from '@dhis2/ui';
 import i18n from '@dhis2/d2-i18n'
 import styles from './App.module.css';
 import ListSection from './components/ListSection';
+import DetailView from './components/DetailView';
 
 
 const query = {
-    me: {
-        resource: 'me',
-    },
-    orgUnits: {
-        resource: "organisationUnits",
+    entityInstances: {
+        resource: "trackedEntityInstances",
         params: {
-            paging: false
+            ou: "iVgNipWEgvE",
+
         }
     },
     entityAttributes: {
         resource: "trackedEntityAttributes",
-    },
-    entityInstances: {
-        resource: "trackedEntityInstances",
-        params: {
-            ou: "m4tOAthk6uT"
-        }
     },
 }
 
@@ -38,17 +31,17 @@ const MyApp = () => {
 
             ) : (
                     <>
-                        {console.log("ORGUNITES: ", data.orgUnits)}
+                        {console.log("ORGUNITES: ", data)}
                         <nav className={styles.menu} data-test-id="menu">
                             <MenuSectionHeader label={i18n.t('Menu')} />
                             <Menu>
-                                <MenuItem label={i18n.t('Organisation Units')} dataTest="menu-org-units" onClick={() => setSelected(data.orgUnits)} />
-                                <MenuItem label={i18n.t('Attributes')} dataTest="menu-attributes" onClick={() => setSelected(data.entityAttributes)} />
+                                <MenuItem label={i18n.t('Index Cases')} dataTest="menu-cases" onClick={() => setSelected(data.entityInstances)} />
+                                <MenuItem label={i18n.t('Contacts')} dataTest="menu-contacts" onClick={() => setSelected(data.entityAttributes)} />
                             </Menu>
                         </nav>
                         <main className={styles.main}>
                             {selected && (
-                                <ListSection data={selected} />
+                                <DetailView entityInstances={selected} />
                             )}
                         </main>
                     </>

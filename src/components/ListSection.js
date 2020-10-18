@@ -6,11 +6,21 @@ import styles from '../App.module.css';
 
 
 const ListSection = (props) => {
-    const { data } = props
+    let { data } = props
     const dataType = Object.keys(data)
-    console.log(data)
     console.log("DATATYPE: ", dataType);
     const [selected, setSelected] = useState()
+
+
+    /*
+        Tracked entity attribute structure:
+        attributes = [
+            {displaName: "Sex", value: "Female"}
+            {displaName: "Date of birth", value: "1976-03-09"}
+            {displaName: "First Name", value: "Alina"}
+            {displaName: "Surname", value: "Huggbugg"}
+        ]
+    */
 
     return (
         <div className={styles.container}>
@@ -18,7 +28,7 @@ const ListSection = (props) => {
                 <h2>List</h2>
                 <Menu>
                     {data[dataType].map(el => (
-                        <MenuItem label={i18n.t(el.displayName)} dataTest={`list-${dataType.slice(0, -1)}-${el.id}`} onClick={() => setSelected(el)} />
+                        <MenuItem label={i18n.t(el.attributes[0].value)} dataTest={`list-${dataType.slice(0, -1)}-${el.id}`} onClick={() => setSelected(el)} />
                     ))}
                 </Menu >
             </div>
