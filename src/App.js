@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useDataQuery } from "@dhis2/app-runtime"
 import { Menu, MenuItem, MenuSectionHeader, CircularLoader } from '@dhis2/ui';
 import i18n from '@dhis2/d2-i18n'
@@ -8,21 +8,26 @@ import DetailView from './components/DetailView';
 
 
 const query = {
-    entityInstances: {
-        resource: "trackedEntityInstances",
-        params: {
-            ou: "iVgNipWEgvE",
-
-        }
-    },
     entityAttributes: {
         resource: "trackedEntityAttributes",
     },
+    programs: {
+        resource: "programs",
+        params: {
+            fields: ["id", "displayName"],
+            paging: false,
+        }
+    }
+
 }
 
 const MyApp = () => {
-    const [selected, setSelected] = useState()
     const { loading, error, data } = useDataQuery(query)
+    const [selected, setSelected] = useState()
+    const programs = {
+        indexCases: "uYjxkTbwRNf",
+        contacts: "DM9n1bUw8W8"
+    }
 
     return (
         <div className={styles.container}>
@@ -35,13 +40,13 @@ const MyApp = () => {
                         <nav className={styles.menu} data-test-id="menu">
                             <MenuSectionHeader label={i18n.t('Menu')} />
                             <Menu>
-                                <MenuItem label={i18n.t('Index Cases')} dataTest="menu-cases" onClick={() => setSelected(data.entityInstances)} />
-                                <MenuItem label={i18n.t('Contacts')} dataTest="menu-contacts" onClick={() => setSelected(data.entityAttributes)} />
+                                <MenuItem label={i18n.t('Index Cases')} dataTest="menu-cases" onClick={() => setSelected(programs.indexCases)} />
+                                <MenuItem label={i18n.t('Contacts')} dataTest="menu-contacts" onClick={() => setSelected(programs.contacts)} />
                             </Menu>
                         </nav>
                         <main className={styles.main}>
                             {selected && (
-                                <DetailView entityInstances={selected} />
+                                <DetailView program={selected} />
                             )}
                         </main>
                     </>
