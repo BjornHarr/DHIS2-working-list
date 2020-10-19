@@ -10,7 +10,7 @@ npm install --global dhis-portal
 
 2. Start up the DHIS2 proxy
 ```
-dhis-portal --server=course --instance=course --auth="<username>:<password>"
+dhis-portal --server=course --instance=course --target=‘https://course.dhis2.org/hmis’ --auth="<username>:<password>"
 ```
 
 Note: Username and password are the login credentials used to log into https://course.dhis2.org/hmis/dhis-web-dashboard/#/. You should have received a mail with login details.

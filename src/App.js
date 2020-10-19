@@ -8,38 +8,35 @@ import DetailView from './components/DetailView';
 
 
 const query = {
-    entityAttributes: {
-        resource: "trackedEntityAttributes",
-    },
     indexCases: {
         resource: "trackedEntityInstances",
-        params: ({ indexCases }) => ({
+        params: {
+            fields: "*",
+            program: "uYjxkTbwRNf",
             ou: "iVgNipWEgvE",
-            program: indexCases
-        })
+        }
     },
-    contacts: {
+    contactCases: {
         resource: "trackedEntityInstances",
-        params: ({ contacts }) => ({
+        params: {
+            fields: "*",
+            program: "DM9n1bUw8W8",
             ou: "iVgNipWEgvE",
-            program: contacts
-        })
+        }
     }
 }
 
-const MyApp = () => {
-    const programs = {
-        indexCases: "uYjxkTbwRNf",
-        contacts: "DM9n1bUw8W8"
-    }
-    const { loading, error, data } = useDataQuery(query, {
-        variables: {
-            indexCases: programs.indexCases,
-            contacts: programs.contacts
-        },
-    })
-    const [selected, setSelected] = useState()
+//nIWQO2FoYZO
 
+const MyApp = () => {
+    const { loading, error, data } = useDataQuery(query)
+    const [selected, setSelected] = useState()
+    const [populateBoth, setPopulateBoth] = useState()
+
+    const populate = () => {
+        const merged = data.indexCases.trackedEntityInstances.concat(data.contactCases.trackedEntityInstances)
+        setPopulateBoth(merged)
+    }
 
     return (
         <div className={styles.container}>
@@ -48,20 +45,21 @@ const MyApp = () => {
 
             ) : (
                     <>
+                        {console.log(data)}
                         <nav className={styles.menu} data-test-id="menu">
                             <MenuSectionHeader label={i18n.t('Menu')} />
                             <Menu>
-                                <MenuItem label={i18n.t('Index Cases')} dataTest="menu-cases" onClick={() => setSelected({ entityInstances: data.indexCases, program: programs.indexCases })} />
-                                <MenuItem label={i18n.t('Contacts')} dataTest="menu-contacts" onClick={() => setSelected({ entityInstances: data.contacts, program: programs.contacts })} />
+                                <MenuItem label={i18n.t('Cases')} dataTest="menu-cases" onClick={() => populate()} />
                             </Menu>
                         </nav>
                         <main className={styles.main}>
-                            {selected && (
-                                <DetailView entityInstances={selected.entityInstances} program={selected.program} />
+                            {populateBoth && (
+                                <DetailView entityInstances={populateBoth} />
                             )}
                         </main>
                     </>
                 )}
+
         </div>
     )
 }
