@@ -13,22 +13,28 @@ import {
 } from '@dhis2/ui';
 
 const DetailView = (props) => {
-    const { entityInstances, program } = props
+    const { entityInstances } = props
     const [entityValues, setEntityValues] = useState([])
-    const dataType = Object.keys(entityInstances)
+
+    const programMapping = {
+        uYjxkTbwRNf: "Index Case",
+        DM9n1bUw8W8: "Contact Case"
+    }
 
     useEffect(() => {
+        console.log("entityInstances: ", entityInstances)
         reconstructAttributes(entityInstances)
     }, [entityInstances])
 
     const reconstructAttributes = (entityInstances) => {
         let entities = []
         let tmp = {}
-        entityInstances[dataType].map(instance => {
-            instance.attributes.map(attribute => {
+        entityInstances.map(entity => {
+            entity.attributes.map(attribute => {
                 tmp[attribute.code] = attribute.value
             })
-            tmp.trackedEntityInstance = instance.trackedEntityInstance
+            tmp.trackedEntityInstance = entity.trackedEntityInstance
+            tmp.program = entity.programOwners[0].program
             entities.push(tmp)
             tmp = []
         })
@@ -46,10 +52,10 @@ const DetailView = (props) => {
                         Surname
       </TableCellHead>
                     <TableCellHead>
-                        Date of birth
+                        Phone number
       </TableCellHead>
                     <TableCellHead>
-                        Sex
+                        Case type
       </TableCellHead>
                     <TableCellHead>
                         Details
@@ -66,13 +72,13 @@ const DetailView = (props) => {
                             {entity.surname}
                         </TableCell>
                         <TableCell dataTest="details-first-name">
-                            {entity.patinfo_ageonsetunit}
+                            {entity.phone_local ? entity.phone_local : entity.parent_telephone}
                         </TableCell>
                         <TableCell dataTest="details-first-name">
-                            {entity.patinfo_sex}
+                            {programMapping[entity.program]}
                         </TableCell>
                         <TableCell dataTest="details-first-name">
-                            <a href={`http://localhost:9999/hmis/dhis-web-tracker-capture/index.html#/dashboard?tei=${entity.trackedEntityInstance}&program=${program}&ou=iVgNipWEgvE`}>
+                            <a href={`http://localhost:9999/hmis/dhis-web-tracker-capture/index.html#/dashboard?tei=${entity.trackedEntityInstance}&program=${entity.program}&ou=iVgNipWEgvE`}>
                                 <Button
                                     dataTest="dhis2-uicore-button"
                                     name="Primary button"
