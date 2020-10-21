@@ -9,12 +9,16 @@ import {
     TableCell,
     TableRow,
     TableBody,
-    Button
+    Button,
+    DropdownButton
 } from '@dhis2/ui';
+import DropdownMenu from './DropdownMenu';
 
 const DetailView = (props) => {
-    const { entityInstances } = props
+    const { data } = props
+    const [entityInstances, setEntityInstances] = useState()
     const [entityValues, setEntityValues] = useState([])
+    const [dropdownValue, setDropdownValue] = useState("Index cases")
 
     const programMapping = {
         uYjxkTbwRNf: "Index Case",
@@ -23,7 +27,10 @@ const DetailView = (props) => {
 
     useEffect(() => {
         console.log("entityInstances: ", entityInstances)
-        reconstructAttributes(entityInstances)
+        if (entityInstances !== undefined) {
+            reconstructAttributes(entityInstances)
+        }
+
     }, [entityInstances])
 
     const reconstructAttributes = (entityInstances) => {
@@ -41,61 +48,98 @@ const DetailView = (props) => {
         setEntityValues(entities)
     }
 
-    return (
-        <Table>
-            <TableHead>
-                <TableRowHead>
-                    <TableCellHead>
-                        First name
-      </TableCellHead>
-                    <TableCellHead>
-                        Surname
-      </TableCellHead>
-                    <TableCellHead>
-                        Phone number
-      </TableCellHead>
-                    <TableCellHead>
-                        Case type
-      </TableCellHead>
-                    <TableCellHead>
-                        Details
-      </TableCellHead>
-                </TableRowHead>
-            </TableHead>
-            <TableBody>
-                {entityValues.map(entity => (
-                    <TableRow onClick={() => console.log("CLICKED")}>
-                        <TableCell dataTest="details-first-name">
-                            {entity.first_name}
-                        </TableCell>
-                        <TableCell dataTest="details-first-name">
-                            {entity.surname}
-                        </TableCell>
-                        <TableCell dataTest="details-first-name">
-                            {entity.phone_local ? entity.phone_local : entity.parent_telephone}
-                        </TableCell>
-                        <TableCell dataTest="details-first-name">
-                            {programMapping[entity.program]}
-                        </TableCell>
-                        <TableCell dataTest="details-first-name">
-                            <a href={`http://localhost:9999/hmis/dhis-web-tracker-capture/index.html#/dashboard?tei=${entity.trackedEntityInstance}&program=${entity.program}&ou=iVgNipWEgvE`}>
-                                <Button
-                                    dataTest="dhis2-uicore-button"
-                                    name="Primary button"
-                                    primary
-                                    type="button"
-                                    value="default"
-                                >
-                                    Details
-                            </Button>
-                            </a>
-                        </TableCell>
-                    </TableRow>
-                ))
-                }
-            </TableBody>
-        </Table >
+    const populateBoth = () => {
+        const merged = data.indexCases.trackedEntityInstances.concat(data.contactCases.trackedEntityInstances)
+        return merged
+    }
 
+
+    const dropdownCallback = (event) => {
+        setDropdownValue(event.value)
+        switch (event.value) {
+            case "Index cases":
+                setEntityInstances(data.indexCases.trackedEntityInstances)
+                break;
+            case "Contact cases":
+                setEntityInstances(data.contactCases.trackedEntityInstances)
+                break;
+            case "Both":
+                setEntityInstances(populateBoth)
+                break;
+            default:
+                console.log("Unable to parse dropdown value");
+        }
+    }
+
+    return (
+        <>
+            <DropdownButton
+                component={<DropdownMenu callback={dropdownCallback} />}
+                dataTest="dhis2-uicore-dropdownbutton"
+                name="default"
+                secondary
+                large
+                value={dropdownValue}
+            >
+                {dropdownValue}
+            </DropdownButton>
+            {entityValues && (
+                <Table>
+                    <TableHead>
+                        <TableRowHead>
+                            <TableCellHead>
+                                First name
+      </TableCellHead>
+                            <TableCellHead>
+                                Surname
+      </TableCellHead>
+                            <TableCellHead>
+                                Phone number
+      </TableCellHead>
+                            <TableCellHead>
+                                Case type
+      </TableCellHead>
+                            <TableCellHead>
+                                Details
+      </TableCellHead>
+                        </TableRowHead>
+                    </TableHead>
+                    <TableBody>
+                        {entityValues.map(entity => (
+                            <TableRow>
+                                <TableCell dataTest="details-first-name">
+                                    {entity.first_name}
+                                </TableCell>
+                                <TableCell dataTest="details-first-name">
+                                    {entity.surname}
+                                </TableCell>
+                                <TableCell dataTest="details-first-name">
+                                    {entity.phone_local ? entity.phone_local : entity.parent_telephone}
+                                </TableCell>
+                                <TableCell dataTest="details-first-name">
+                                    {programMapping[entity.program]}
+                                </TableCell>
+                                <TableCell dataTest="details-first-name">
+                                    <a href={`http://localhost:9999/hmis/dhis-web-tracker-capture/index.html#/dashboard?tei=${entity.trackedEntityInstance}&program=${entity.program}&ou=iVgNipWEgvE`}>
+                                        <Button
+                                            dataTest="dhis2-uicore-button"
+                                            name="Primary button"
+                                            primary
+                                            type="button"
+                                            value="default"
+                                        >
+                                            Details
+                            </Button>
+                                    </a>
+                                </TableCell>
+                            </TableRow>
+                        ))
+                        }
+                    </TableBody>
+                </Table >
+            )}
+
+        </>
     )
 
 };
