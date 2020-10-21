@@ -26,17 +26,10 @@ const query = {
     }
 }
 
-//nIWQO2FoYZO
 
 const MyApp = () => {
     const { loading, error, data } = useDataQuery(query)
     const [selected, setSelected] = useState()
-    const [populateBoth, setPopulateBoth] = useState()
-
-    const populate = () => {
-        const merged = data.indexCases.trackedEntityInstances.concat(data.contactCases.trackedEntityInstances)
-        setPopulateBoth(merged)
-    }
 
     return (
         <div className={styles.container}>
@@ -45,16 +38,15 @@ const MyApp = () => {
 
             ) : (
                     <>
-                        {console.log(data)}
                         <nav className={styles.menu} data-test-id="menu">
                             <MenuSectionHeader label={i18n.t('Menu')} />
                             <Menu>
-                                <MenuItem label={i18n.t('Cases')} dataTest="menu-cases" onClick={() => populate()} />
+                                <MenuItem label={i18n.t('Cases')} dataTest="menu-cases" onClick={() => setSelected("Cases")} />
                             </Menu>
                         </nav>
                         <main className={styles.main}>
-                            {populateBoth && (
-                                <DetailView entityInstances={populateBoth} />
+                            {selected && (
+                                <DetailView data={data} />
                             )}
                         </main>
                     </>
