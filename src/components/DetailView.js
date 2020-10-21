@@ -54,10 +54,9 @@ const DetailView = (props) => {
     }
 
 
-    const dropdownCallback = (callbackValue) => {
-        setDropdownValue(callbackValue)
-
-        switch (dropdownValue) {
+    const dropdownCallback = (event) => {
+        setDropdownValue(event.value)
+        switch (event.value) {
             case "Index cases":
                 setEntityInstances(data.indexCases.trackedEntityInstances)
                 break;

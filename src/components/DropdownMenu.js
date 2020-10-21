@@ -14,18 +14,21 @@ const DropdownMenu = ({ callback }) => {
         >
             <MenuItem
                 dataTest="dhis2-uicore-menuitem"
-                label="Index Cases"
-                onClick={() => callback("Index cases")}
+                label="Index cases"
+                value="Index cases"
+                onClick={(event) => callback(event)}
             />
             <MenuItem
                 dataTest="dhis2-uicore-menuitem"
-                label="Contact Cases"
-                onClick={() => callback("Contact cases")}
+                label="Contact cases"
+                value="Contact cases"
+                onClick={(event) => callback(event)}
             />
             <MenuItem
                 dataTest="dhis2-uicore-menuitem"
                 label="Both"
-                onClick={() => callback("Both")}
+                value="Both"
+                onClick={(event) => callback(event)}
             />
         </FlyoutMenu>
     )
