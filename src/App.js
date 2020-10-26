@@ -5,6 +5,7 @@ import i18n from '@dhis2/d2-i18n'
 import styles from './App.module.css';
 import ListSection from './components/ListSection';
 import DetailView from './components/DetailView';
+import Workload from './components/Workload';
 
 
 const query = {
@@ -46,7 +47,7 @@ const MyApp = () => {
                         </nav>
                         <main className={styles.main}>
                             {selected && (
-                                <DetailView data={data} />
+                                <Workload />
                             )}
                         </main>
                     </>

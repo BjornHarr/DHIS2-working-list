@@ -120,7 +120,7 @@ const DetailView = (props) => {
                                     {programMapping[entity.program]}
                                 </TableCell>
                                 <TableCell dataTest="details-first-name">
-                                    <a href={`http://localhost:9999/hmis/dhis-web-tracker-capture/index.html#/dashboard?tei=${entity.trackedEntityInstance}&program=${entity.program}&ou=iVgNipWEgvE`}>
+                                    <a href={`http://localhost:9999/dhis-web-tracker-capture/index.html#/dashboard?tei=${entity.trackedEntityInstance}&program=${entity.program}&ou=iVgNipWEgvE`}>
                                         <Button
                                             dataTest="dhis2-uicore-button"
                                             name="Primary button"
