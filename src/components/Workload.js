@@ -2,14 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { useDataQuery } from "@dhis2/app-runtime"
 import {
     Table,
-    TableHead,
-    TableRowHead,
-    TableCellHead,
     TableCell,
     TableRow,
-    TableBody,
-    Button,
-    DropdownButton
+    TableBody
 } from '@dhis2/ui';
 
 import Calendar from 'react-calendar';
@@ -33,6 +28,9 @@ const Workload = () => {
   };
 
   return (
+    <>
+
+    <h1>Workload</h1>
     <DatePicker
       selected={startDate}
       onChange={onChange}
@@ -41,6 +39,41 @@ const Workload = () => {
       selectsRange
       inline
     />
+
+   
+    <Table suppressZebraStriping> 
+        <TableBody>
+                <TableRow>
+                    <TableCell dataTest="">
+                        Index Cases
+                    </TableCell>
+                    <TableCell dataTest="details-first-name">
+                        XXX
+                    </TableCell>
+                                                    
+                </TableRow>
+                <TableRow>
+                    <TableCell dataTest="">
+                        Contacts
+                    </TableCell>
+                    <TableCell dataTest="details-first-name">
+                        XXX
+                    </TableCell>
+                                                    
+                </TableRow>
+                <TableRow>
+                    <TableCell dataTest="">
+                        Total
+                    </TableCell>
+                    <TableCell dataTest="details-first-name">
+                        XXX
+                    </TableCell>
+                                                    
+                </TableRow>
+        </TableBody>
+    </Table >
+
+    </>
   );
 }
 
