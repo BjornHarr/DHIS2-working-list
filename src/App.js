@@ -48,6 +48,7 @@ const MyApp = () => {
                             </Menu>
                         </nav>
                         <main className={styles.main}>
+                          
                         {selected && (
                                 selected == "Cases" ? (
                                     <DetailView data={data}/>
