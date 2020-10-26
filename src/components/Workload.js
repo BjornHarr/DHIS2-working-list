@@ -16,7 +16,7 @@ import "react-datepicker/dist/react-datepicker.css";
 
 
 
-const Workload = () => {
+const WorkLoad = () => {
   const [startDate, setStartDate] = useState(new Date());
 
   const [endDate, setEndDate] = useState(null);
@@ -77,4 +77,4 @@ const Workload = () => {
   );
 }
 
-export default Workload;
+export default WorkLoad;
