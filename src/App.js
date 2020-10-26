@@ -5,7 +5,7 @@ import i18n from '@dhis2/d2-i18n'
 import styles from './App.module.css';
 import ListSection from './components/ListSection';
 import DetailView from './components/DetailView';
-import WorkLoad from './components/WorkLoad';
+import Workload from './components/Worload';
 
 
 const query = {
@@ -53,7 +53,7 @@ const MyApp = () => {
                                 selected == "Cases" ? (
                                     <DetailView data={data}/>
                                 ) : (
-                                        <WorkLoad />
+                                        <Workload />
                                     )
                             )}
                         </main>
