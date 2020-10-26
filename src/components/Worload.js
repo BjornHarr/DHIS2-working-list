@@ -1,31 +1,44 @@
 import React, { useEffect, useState } from 'react';
-import { useDataQuery } from "@dhis2/app-runtime";
+import { useDataQuery } from "@dhis2/app-runtime"
 import {
-    Card,
     Table,
-    TableHead,
-    TableRowHead,
-    TableCellHead,
     TableCell,
     TableRow,
     TableBody
 } from '@dhis2/ui';
 
-const WorkLoad = (props) => {
-    const { data } = props
+import Calendar from 'react-calendar';
+import 'react-calendar/dist/Calendar.css';
 
-    return(
-        <>
-        <h1>Workload</h1>
-        <div
-            style={{
-                height: '358px',
-                width: '358px'
-            }}
-            >
-            <Card dataTest="dhis2-uicore-card" />
-            </div>
-            <Table suppressZebraStriping> 
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+
+
+
+
+const Workload = () => {
+  const [startDate, setStartDate] = useState(new Date());
+
+  const [endDate, setEndDate] = useState(null);
+
+  const onChange = dates => {
+    const [start, end] = dates;
+    setStartDate(start);
+    setEndDate(end);
+  };
+
+  return (
+      <>
+    <DatePicker
+      selected={startDate}
+      onChange={onChange}
+      startDate={startDate}
+      endDate={endDate}
+      selectsRange
+      inline
+    />
+
+        <Table suppressZebraStriping> 
                 <TableBody>
                         <TableRow>
                             <TableCell dataTest="">
@@ -59,8 +72,8 @@ const WorkLoad = (props) => {
             
          
         </>
-        );
 
-};
+  );
+}
 
-export default WorkLoad;
+export default Workload;
