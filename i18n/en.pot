@@ -5,11 +5,14 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2020-10-21T10:12:26.993Z\n"
-"PO-Revision-Date: 2020-10-21T10:12:26.993Z\n"
+"POT-Creation-Date: 2020-10-26T08:37:26.471Z\n"
+"PO-Revision-Date: 2020-10-26T08:37:26.471Z\n"
 
 msgid "Menu"
 msgstr ""
 
 msgid "Cases"
+msgstr ""
+
+msgid "Workload"
 msgstr ""

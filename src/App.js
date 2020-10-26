@@ -5,7 +5,7 @@ import i18n from '@dhis2/d2-i18n'
 import styles from './App.module.css';
 import ListSection from './components/ListSection';
 import DetailView from './components/DetailView';
-import Workload from './components/Workload';
+import WorkLoad from './components/WorkLoad';
 
 
 const query = {
@@ -32,6 +32,7 @@ const MyApp = () => {
     const { loading, error, data } = useDataQuery(query)
     const [selected, setSelected] = useState()
 
+
     return (
         <div className={styles.container}>
             {loading ? (
@@ -43,11 +44,17 @@ const MyApp = () => {
                             <MenuSectionHeader label={i18n.t('Menu')} />
                             <Menu>
                                 <MenuItem label={i18n.t('Cases')} dataTest="menu-cases" onClick={() => setSelected("Cases")} />
+                                <MenuItem label={i18n.t('Workload')} dataTest="menu-workload" onClick={() => setSelected("Workload")} />
                             </Menu>
                         </nav>
                         <main className={styles.main}>
-                            {selected && (
-                                <Workload />
+                          
+                        {selected && (
+                                selected == "Cases" ? (
+                                    <DetailView data={data}/>
+                                ) : (
+                                        <WorkLoad />
+                                    )
                             )}
                         </main>
                     </>
