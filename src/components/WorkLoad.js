@@ -38,6 +38,7 @@ const query = {
             order: "created:desc",
             ouMode: "SELECTED",
             programStatus: "ACTIVE",
+            eventStatus: "SCHEDULE",
             eventStartDate: "2018-01-30",
             eventEndDate: "2020-10-26",
             pageSize: 1000,
@@ -46,16 +47,6 @@ const query = {
         }
     }
 
-    /*
-        THIS_WEEK, LAST_WEEK, LAST_4_WEEKS, LAST_12_WEEKS, LAST_52_WEEKS,
-        THIS_MONTH, LAST_MONTH, THIS_BIMONTH, LAST_BIMONTH, THIS_QUARTER, LAST_QUARTER,
-        THIS_SIX_MONTH, LAST_SIX_MONTH, MONTHS_THIS_YEAR, QUARTERS_THIS_YEAR,
-        THIS_YEAR, MONTHS_LAST_YEAR, QUARTERS_LAST_YEAR, LAST_YEAR, LAST_5_YEARS, LAST_12_MONTHS,
-        LAST_3_MONTHS, LAST_6_BIMONTHS, LAST_4_QUARTERS, LAST_2_SIXMONTHS, THIS_FINANCIAL_YEAR,
-        LAST_FINANCIAL_YEAR, LAST_5_FINANCIAL_YEARS
-        */
-
-
 }
 
 
@@ -63,6 +54,10 @@ const WorkLoad = (props) => {
     const { loading, error, data } = useDataQuery(query)
 
     useEffect(() => {
+        if (data) {
+            const merged = data.indexWorkload.trackedEntityInstances.concat(data.contactWorkload.trackedEntityInstances)
+            console.log(merged);
+        }
 
     }, [data])
 
@@ -78,6 +73,7 @@ const WorkLoad = (props) => {
                 <Card dataTest="dhis2-uicore-card" />
             </div>
             {console.log("data", data)}
+
             <Table suppressZebraStriping>
                 <TableBody>
                     <TableRow>
