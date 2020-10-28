@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDataQuery } from "@dhis2/app-runtime"
+import './DetailView.css';
 
 import {
     Table,
@@ -80,6 +81,7 @@ const DetailView = (props) => {
                 secondary
                 large
                 value={dropdownValue}
+                className='dropDown'
             >
                 {dropdownValue}
             </DropdownButton>

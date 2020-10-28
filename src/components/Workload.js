@@ -13,7 +13,7 @@ import 'react-calendar/dist/Calendar.css';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-
+import './Workload.css';
 
 
 const Workload = () => {
