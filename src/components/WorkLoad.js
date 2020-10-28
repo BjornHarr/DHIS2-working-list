@@ -50,7 +50,7 @@ const query = {
 }
 
 
-const WorkLoad = (props) => {
+const Workload = (props) => {
     const { loading, error, data } = useDataQuery(query)
 
     useEffect(() => {
@@ -112,4 +112,4 @@ const WorkLoad = (props) => {
 
 };
 
-export default WorkLoad;
+export default Workload;
