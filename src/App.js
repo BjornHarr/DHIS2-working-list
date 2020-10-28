@@ -14,7 +14,9 @@ const query = {
         params: {
             fields: "*",
             program: "uYjxkTbwRNf",
+            ouMode: "SELECTED",
             ou: "iVgNipWEgvE",
+            programStatus: "ACTIVE"
         }
     },
     contactCases: {
@@ -23,9 +25,12 @@ const query = {
             fields: "*",
             program: "DM9n1bUw8W8",
             ou: "iVgNipWEgvE",
+            ouMode: "SELECTED",
         }
     }
 }
+
+
 
 
 const MyApp = () => {
