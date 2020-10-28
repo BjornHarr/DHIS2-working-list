@@ -17,63 +17,64 @@ import './Workload.css';
 
 
 const Workload = () => {
-  const [startDate, setStartDate] = useState(new Date());
+    const [startDate, setStartDate] = useState(new Date());
 
-  const [endDate, setEndDate] = useState(null);
+    const [endDate, setEndDate] = useState(null);
 
-  const onChange = dates => {
-    const [start, end] = dates;
-    setStartDate(start);
-    setEndDate(end);
-  };
+    const onChange = dates => {
+        const [start, end] = dates;
+        setStartDate(start);
+        setEndDate(end);
+    };
 
-  return (
-      <>
-    <DatePicker
-      selected={startDate}
-      onChange={onChange}
-      startDate={startDate}
-      endDate={endDate}
-      selectsRange
-      inline
-    />
-
-        <Table suppressZebraStriping> 
+    return (
+        <div id='workloadContent'>
+            <div className='datePicker'>
+                <DatePicker
+                    selected={startDate}
+                    onChange={onChange}
+                    startDate={startDate}
+                    endDate={endDate}
+                    selectsRange
+                    inline
+                />
+            </div>
+            <Table suppressZebraStriping className='workLoadTable'>
                 <TableBody>
-                        <TableRow>
-                            <TableCell dataTest="">
-                                Index Cases
+                    <TableRow>
+                        <TableCell dataTest="" className='leftColumn'>
+                            Index Cases
                             </TableCell>
-                            <TableCell dataTest="details-first-name">
-                                XXX
+                        <TableCell dataTest="details-first-name" className='rightColumn'>
+                            XXX
                             </TableCell>
-                                                            
-                        </TableRow>
-                        <TableRow>
-                            <TableCell dataTest="">
-                                Contacts
+
+                    </TableRow>
+                    <TableRow>
+                        <TableCell dataTest="" className='leftColumn'>
+                            Contacts
                             </TableCell>
-                            <TableCell dataTest="details-first-name">
-                                XXX
+                        <TableCell dataTest="details-first-name" className='rightColumn'>
+                            XXX
                             </TableCell>
-                                                            
-                        </TableRow>
-                        <TableRow>
-                            <TableCell dataTest="">
-                                Total
+
+                    </TableRow>
+                    <TableRow>
+                        <TableCell dataTest="" className='leftColumn'>
+                            Total
                             </TableCell>
-                            <TableCell dataTest="details-first-name">
-                                XXX
+                        <TableCell dataTest="details-first-name" className='rightColumn'>
+                            XXX
                             </TableCell>
-                                                            
-                        </TableRow>
+
+                    </TableRow>
                 </TableBody>
             </Table >
-            
-         
-        </>
 
-  );
+
+        </div>
+
+    );
 }
 
 export default Workload;

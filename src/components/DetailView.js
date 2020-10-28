@@ -86,7 +86,7 @@ const DetailView = (props) => {
                 {dropdownValue}
             </DropdownButton>
             {entityValues && (
-                <Table>
+                <Table className='detailViewTable'>
                     <TableHead>
                         <TableRowHead>
                             <TableCellHead>
