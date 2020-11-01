@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import i18n from '@dhis2/d2-i18n';
 import { Menu, MenuItem } from '@dhis2/ui';
-import DetailView from './DetailView';
+import DetailView from './Cases';
 import styles from '../App.module.css';
 
 

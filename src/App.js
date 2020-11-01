@@ -4,7 +4,7 @@ import { Menu, MenuItem, MenuSectionHeader, CircularLoader } from '@dhis2/ui';
 import i18n from '@dhis2/d2-i18n'
 import styles from './App.module.css';
 import ListSection from './components/ListSection';
-import DetailView from './components/DetailView';
+import Cases from './components/Cases';
 import Workload from './components/Workload';
 
 
@@ -48,19 +48,19 @@ const MyApp = () => {
                             </Menu>
                         </nav>
                         <main className={styles.main}>
-                          
-                        {selected && (
+                            {selected && (
                                 selected == "Cases" ? (
-                                    <DetailView data={data}/>
+                                    <Cases data={data} />
                                 ) : (
                                         <Workload />
                                     )
                             )}
                         </main>
                     </>
-                )}
+                )
+            }
 
-        </div>
+        </div >
     )
 }
 

@@ -6,17 +6,49 @@ import {
     TableRow,
     TableBody
 } from '@dhis2/ui';
-
-import Calendar from 'react-calendar';
-import 'react-calendar/dist/Calendar.css';
-
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-
 import './Workload.css';
+
+const query = {
+    contactWorkload: {
+        resource: "trackedEntityInstances",
+        params: {
+            fields: "*",
+            program: "DM9n1bUw8W8",
+            ou: "iVgNipWEgvE",
+            order: "created:desc",
+            ouMode: "SELECTED",
+            programStatus: "ACTIVE",
+            eventStatus: "OVERDUE",
+            eventStartDate: "2018-01-30",
+            eventEndDate: "2020-10-26",
+            pageSize: 1000,
+            page: 1,
+            totalPages: true,
+        }
+    },
+    indexWorkload: {
+        resource: "trackedEntityInstances",
+        params: {
+            fields: "*",
+            program: "uYjxkTbwRNf",
+            ou: "iVgNipWEgvE",
+            order: "created:desc",
+            ouMode: "SELECTED",
+            programStatus: "ACTIVE",
+            eventStartDate: "2018-01-30",
+            eventEndDate: "2020-10-26",
+            pageSize: 1000,
+            page: 1,
+            totalPages: true,
+        }
+    }
+}
 
 
 const Workload = () => {
+    const { loading, error, data } = useDataQuery(query)
     const [startDate, setStartDate] = useState(new Date());
 
     const [endDate, setEndDate] = useState(null);
@@ -27,9 +59,18 @@ const Workload = () => {
         setEndDate(end);
     };
 
+
+    useEffect(() => {
+        if (data) {
+            const merged = data.indexWorkload.trackedEntityInstances.concat(data.contactWorkload.trackedEntityInstances)
+            console.log(merged);
+        }
+
+    }, [data])
+
     return (
-        <div id='workloadContent'>
-            <div className='datePicker'>
+        <div id="workload-content">
+            <div className="date-picker">
                 <DatePicker
                     selected={startDate}
                     onChange={onChange}
@@ -39,41 +80,39 @@ const Workload = () => {
                     inline
                 />
             </div>
-            <Table suppressZebraStriping className='workLoadTable'>
+
+            <Table suppressZebraStriping className="workload-table">
                 <TableBody>
                     <TableRow>
-                        <TableCell dataTest="" className='leftColumn'>
+                        <TableCell className="left-column">
                             Index Cases
-                            </TableCell>
-                        <TableCell dataTest="details-first-name" className='rightColumn'>
+                        </TableCell>
+                        <TableCell className="right-column">
                             XXX
-                            </TableCell>
+                        </TableCell>
 
                     </TableRow>
                     <TableRow>
-                        <TableCell dataTest="" className='leftColumn'>
+                        <TableCell className="left-column">
                             Contacts
-                            </TableCell>
-                        <TableCell dataTest="details-first-name" className='rightColumn'>
+                        </TableCell>
+                        <TableCell className="right-column">
                             XXX
-                            </TableCell>
+                        </TableCell>
 
                     </TableRow>
                     <TableRow>
-                        <TableCell dataTest="" className='leftColumn'>
+                        <TableCell className="left-column">
                             Total
-                            </TableCell>
-                        <TableCell dataTest="details-first-name" className='rightColumn'>
+                        </TableCell>
+                        <TableCell className="right-column">
                             XXX
-                            </TableCell>
+                        </TableCell>
 
                     </TableRow>
                 </TableBody>
             </Table >
-
-
         </div>
-
     );
 }
 
