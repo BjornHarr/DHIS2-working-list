@@ -35,7 +35,7 @@ const query = {
 
 const MyApp = () => {
     const { loading, error, data } = useDataQuery(query)
-    const [selected, setSelected] = useState()
+    const [selected, setSelected] = useState("Cases")
 
 
     return (
