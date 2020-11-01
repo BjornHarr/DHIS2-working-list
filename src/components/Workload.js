@@ -20,7 +20,7 @@ const query = {
             orgUnit: "iVgNipWEgvE",
             ouMode: "SELECTED",
             programStatus: "ACTIVE",
-            status: "SCHEDULE",
+            status: "ACTIVE",
             page: 1,
             totalPages: true
         }
@@ -29,11 +29,11 @@ const query = {
         resource: "events",
         params: {
             fields: "*",
-            program: "uYjxkTbwRNf",
+            program: "DM9n1bUw8W8",
             orgUnit: "iVgNipWEgvE",
             ouMode: "SELECTED",
             programStatus: "ACTIVE",
-            status: "SCHEDULE",
+            status: "ACTIVE",
             page: 1,
             totalPages: true
         }
@@ -63,12 +63,13 @@ const Workload = () => {
     const calculateWorkload = () => {
         const startEpoch = startDate.getTime()
         const endEpoch = endDate.getTime()
+        const merged = data.indexCases.events.concat(data.contactCases.events)
         const tmpWorkload = {
             indexCases: 0,
             contactCases: 0,
             total: 0
         }
-        data.workload.events.map(event => {
+        merged.map(event => {
             const dueDate = Date.parse(event.dueDate)
             if (dueDate >= startEpoch && dueDate <= endEpoch) {
                 if (event.program == "uYjxkTbwRNf") {
