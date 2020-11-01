@@ -11,15 +11,18 @@ import {
     TableRow,
     TableBody,
     Button,
-    DropdownButton
+    DropdownButton,
+    Divider
 } from '@dhis2/ui';
 import DropdownMenu from './DropdownMenu';
+import ContactOverlay from './ContactOverlay';
 
 const DetailView = (props) => {
     const { data } = props
     const [entityInstances, setEntityInstances] = useState()
     const [entityValues, setEntityValues] = useState([])
     const [dropdownValue, setDropdownValue] = useState("Index cases")
+    const [showOverlay, setShowOverlay] = useState(false)
 
     const programMapping = {
         uYjxkTbwRNf: "Index Case",
@@ -85,6 +88,11 @@ const DetailView = (props) => {
             >
                 {dropdownValue}
             </DropdownButton>
+
+            {showOverlay && (
+              <ContactOverlay/>
+            )}
+
             {entityValues && (
                 <Table className='detailViewTable'>
                     <TableHead>
@@ -104,7 +112,10 @@ const DetailView = (props) => {
                             <TableCellHead>
                                 Details
       </TableCellHead>
+                            <TableCellHead>
+      </TableCellHead>
                         </TableRowHead>
+
                     </TableHead>
                     <TableBody>
                         {entityValues.map(entity => (
@@ -131,9 +142,23 @@ const DetailView = (props) => {
                                             value="default"
                                         >
                                             Details
-                            </Button>
+                                        </Button>
                                     </a>
                                 </TableCell>
+
+                                {programMapping[entity.program] == "Index Case" && (
+                                  <TableCell dataTest="deta-first-name">
+                                    <Button
+                                        dataTest="dhis2-uicore-button"
+                                        name="Basic button"
+                                        onClick={() => setShowOverlay(true)}
+                                        type="button"
+                                        value="default"
+                                    >
+                                        Contact cases
+                                    </Button>
+                                </TableCell>
+                              )}
                             </TableRow>
                         ))
                         }
