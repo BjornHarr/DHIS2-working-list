@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDataQuery } from "@dhis2/app-runtime"
+import './Cases.css';
 
 import {
     Table,
@@ -109,6 +110,7 @@ const Cases = (props) => {
                 secondary
                 large
                 value={dropdownValue}
+                className='drop-down'
             >
                 {dropdownValue}
             </DropdownButton>
@@ -118,8 +120,7 @@ const Cases = (props) => {
             )}
 
             {entityValues && (
-                <Table>
-                    {console.log(entityValues)}
+                <Table className='detail-view-table'>
                     <TableHead>
                         <TableRowHead>
                             <TableCellHead>

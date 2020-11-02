@@ -11,7 +11,7 @@ import {
 } from '@dhis2/ui';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-
+import './Workload.css';
 
 const query = {
     indexCases: {
@@ -61,10 +61,10 @@ const Workload = () => {
         setEndDate(end);
     };
 
-    const switchChange = (event) =>{
-        setTglSwitch({...tglSwitch, [event.name]: event.checked })
+    const switchChange = (event) => {
+        setTglSwitch({ ...tglSwitch, [event.name]: event.checked })
         //console.log(event);
-   }
+    }
 
     useEffect(() => {
         //console.log(data);
@@ -75,7 +75,7 @@ const Workload = () => {
         const startEpoch = startDate.getTime()
 
         //Sjekker at endDate ikke er null
-        try{
+        try {
             const endEpoch = endDate.getTime()
 
             const merged = data.indexCases.events.concat(data.contactCases.events)
@@ -85,11 +85,9 @@ const Workload = () => {
                 contactCases: 0,
                 total: 0
             }
-            
             merged.map(event => {
 
                 const dueDate = Date.parse(event.dueDate)
-                
                 if (dueDate >= startEpoch && dueDate <= endEpoch) {
                     if (event.program == "uYjxkTbwRNf") {
                         tmpWorkload.indexCases++
@@ -99,66 +97,67 @@ const Workload = () => {
                         console.log("Program not recognized")
                     }
                     tmpWorkload.total++
-                } 
+                }
             })
             setWorkload(tmpWorkload), setTypeError(false)
         }
-        catch (e){
+        catch (e) {
             //Treng berre ein av desse kanskje?
-            if(e instanceof TypeError && endDate === null){
+            if (e instanceof TypeError && endDate === null) {
                 setTypeError(true);
                 //bedre med metode enn state?
             }
-            
+
         }
     }
 
     return (
-        <>
+        <div id="workload-content">
+            <h1>Workload</h1>
+            <section>
+                <>
+                    <SwitchField
+                        checked={tglSwitch.indexcases}
+                        dataTest="dhis2-uiwidgets-switchfield"
+                        label="Index cases"
+                        name="indexcases"
+                        onChange={switchChange}
+                        value="checked"
+                    />
+                    <SwitchField
+                        checked={tglSwitch.contacts}
+                        dataTest="dhis2-uiwidgets-switchfield"
+                        label="Contacts"
+                        name="contacts"
+                        onChange={switchChange}
+                        value="unchecked"
+                    />
+                </>
+            </section>
 
-        <h1>Workload</h1>
-        <section>
-            <>
-            <SwitchField
-                checked={tglSwitch.indexcases}
-                dataTest="dhis2-uiwidgets-switchfield"
-                label="Index cases"
-                name="indexcases"
-                onChange={switchChange}
-                value="checked"
-            />
-            <SwitchField
-                checked={tglSwitch.contacts}
-                dataTest="dhis2-uiwidgets-switchfield"
-                label="Contacts"
-                name="contacts"
-                onChange={switchChange}
-                value="unchecked"
-            />
-            </>
-        </section>
-        
-        {!typeError &&
-        <p>Velg startdato og sluttdato for når du ønsker å vite arbeidsmengden</p>
-        }
-        {typeError && 
-            <NoticeBox 
-                dataTest="dhis2-uicore-noticebox"
-                title="Velg en sluttdato"
-                warning
+            {!typeError &&
+                <p>Velg startdato og sluttdato for når du ønsker å vite arbeidsmengden</p>
+            }
+            {typeError &&
+                <NoticeBox
+                    dataTest="dhis2-uicore-noticebox"
+                    title="Velg en sluttdato"
+                    warning
                 >
-                Husk å velg en sluttdato. Nå er det bare valgt en startdato.
+                    Husk å velg en sluttdato. Nå er det bare valgt en startdato.
             </NoticeBox>
-        }
-            <DatePicker
-                selected={startDate}
-                onChange={onChange}
-                startDate={startDate}
-                endDate={endDate}
-                selectsRange
-                inline
-                
-            />
+            }
+            <div className="date-picker">
+                <DatePicker
+                    selected={startDate}
+                    onChange={onChange}
+                    startDate={startDate}
+                    endDate={endDate}
+                    selectsRange
+                    inline
+
+                />
+            </div>
             <Button
                 dataTest="dhis2-uicore-button"
                 name="Primary button"
@@ -172,44 +171,43 @@ const Workload = () => {
 
             {workload && (
 
-                <Table suppressZebraStriping>
+                <Table suppressZebraStriping className="workload-table">
                     <TableBody>
-                    {tglSwitch.indexcases &&
-                        <TableRow>
-                            <TableCell dataTest="">
-                                Index Cases
+                        {tglSwitch.indexcases &&
+                            <TableRow>
+                                <TableCell className="left-column">
+                                    Index Cases
                         </TableCell>
-                            <TableCell dataTest="details-first-name">
-                                {workload.indexCases}
-                            </TableCell>
-                        </TableRow>
-                    }
-                    {tglSwitch.contacts &&
-                        <TableRow>
-                            <TableCell dataTest="">
-                                Contacts
+                                <TableCell className="right-column">
+                                    {workload.indexCases}
+                                </TableCell>
+                            </TableRow>
+                        }
+                        {tglSwitch.contacts &&
+                            <TableRow>
+                                <TableCell className="left-column">
+                                    Contacts
                         </TableCell>
-                            <TableCell dataTest="details-first-name">
-                                {workload.contactCases}
-                            </TableCell>
+                                <TableCell className="right-column">
+                                    {workload.contactCases}
+                                </TableCell>
 
-                        </TableRow>
-                    }
-                    {(tglSwitch.indexcases && tglSwitch.contacts) &&
-                        <TableRow>
-                            <TableCell dataTest="">
-                                Total
+                            </TableRow>
+                        }
+                        {(tglSwitch.indexcases && tglSwitch.contacts) &&
+                            <TableRow>
+                                <TableCell className="left-column">
+                                    Total
                         </TableCell>
-                            <TableCell dataTest="details-first-name">
-                                {workload.total}
-                            </TableCell>
-
-                        </TableRow>
-                    }
+                                <TableCell className="right-column">
+                                    {workload.total}
+                                </TableCell>
+                            </TableRow>
+                        }
                     </TableBody>
                 </Table >
             )}
-        </>
+        </div>
     );
 }
 

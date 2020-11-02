@@ -1,0 +1,25 @@
+#workload-content {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: flex-start;
+}
+
+.date-picker {
+    margin-right: 5em;
+}
+
+.right-column{
+    text-align: right;
+    width: fit-content;
+}
+
+.left-column{
+    text-align: left;
+    font-weight: bold;
+    width:  fit-content;
+    min-width: 14em;
+}
+
+.workload-table {
+    margin-top: 4em;
+}
