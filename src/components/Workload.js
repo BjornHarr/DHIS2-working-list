@@ -5,7 +5,8 @@ import {
     TableCell,
     TableRow,
     TableBody,
-    Button
+    Button,
+    SwitchField
 } from '@dhis2/ui';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -43,6 +44,10 @@ const query = {
 
 
 const Workload = () => {
+    const [tglSwitch, setTglSwitch] = useState({
+        indexcases: true,
+        contacts: false,
+    });
     const { loading, error, data } = useDataQuery(query)
     const [workload, setWorkload] = useState()
     const [startDate, setStartDate] = useState(new Date());
@@ -54,6 +59,10 @@ const Workload = () => {
         setEndDate(end);
     };
 
+    const switchChange = (event) =>{
+        setTglSwitch({...tglSwitch, [event.name]: event.checked })
+        //console.log(event);
+   }
 
     useEffect(() => {
         console.log(data);
@@ -63,14 +72,19 @@ const Workload = () => {
     const calculateWorkload = () => {
         const startEpoch = startDate.getTime()
         const endEpoch = endDate.getTime()
+
         const merged = data.indexCases.events.concat(data.contactCases.events)
+
         const tmpWorkload = {
             indexCases: 0,
             contactCases: 0,
             total: 0
         }
+
         merged.map(event => {
+
             const dueDate = Date.parse(event.dueDate)
+            
             if (dueDate >= startEpoch && dueDate <= endEpoch) {
                 if (event.program == "uYjxkTbwRNf") {
                     tmpWorkload.indexCases++
@@ -87,6 +101,28 @@ const Workload = () => {
 
     return (
         <>
+
+        <h1>Workload</h1>
+        <section>
+            <>
+            <SwitchField
+                checked={tglSwitch.indexcases}
+                dataTest="dhis2-uiwidgets-switchfield"
+                label="Index cases"
+                name="indexcases"
+                onChange={switchChange}
+                value="checked"
+            />
+            <SwitchField
+                checked={tglSwitch.contacts}
+                dataTest="dhis2-uiwidgets-switchfield"
+                label="Contacts"
+                name="contacts"
+                onChange={switchChange}
+                value="unchecked"
+            />
+            </>
+        </section>
             <DatePicker
                 selected={startDate}
                 onChange={onChange}
@@ -105,11 +141,12 @@ const Workload = () => {
             >
                 Submit
                             </Button>
-            {workload && (
 
+            {workload && (
 
                 <Table suppressZebraStriping>
                     <TableBody>
+                    {tglSwitch.indexcases &&
                         <TableRow>
                             <TableCell dataTest="">
                                 Index Cases
@@ -117,8 +154,9 @@ const Workload = () => {
                             <TableCell dataTest="details-first-name">
                                 {workload.indexCases}
                             </TableCell>
-
                         </TableRow>
+                    }
+                    {tglSwitch.contacts &&
                         <TableRow>
                             <TableCell dataTest="">
                                 Contacts
@@ -128,6 +166,8 @@ const Workload = () => {
                             </TableCell>
 
                         </TableRow>
+                    }
+                    {(tglSwitch.indexcases && tglSwitch.contacts) &&
                         <TableRow>
                             <TableCell dataTest="">
                                 Total
@@ -137,6 +177,7 @@ const Workload = () => {
                             </TableCell>
 
                         </TableRow>
+                    }
                     </TableBody>
                 </Table >
             )}
