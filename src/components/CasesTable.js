@@ -1,9 +1,11 @@
 import React from 'react'
-import { Table, TableHead, TableRowHead, TableCellHead, TableCell, TableRow, TableBody, Button, DropdownButton } from '@dhis2/ui';
+import { useConfig } from "@dhis2/app-runtime"
+import { Table, TableHead, TableRowHead, TableCellHead, TableCell, TableRow, TableBody, Button } from '@dhis2/ui';
 
 
 const CasesTable = (props) => {
     const { data, displayOverlay } = props
+    const { baseUrl } = useConfig()
 
     const programMapping = {
         uYjxkTbwRNf: "Index Case",
@@ -50,7 +52,7 @@ const CasesTable = (props) => {
                             {programMapping[el.program]}
                         </TableCell>
                         <TableCell dataTest="details-first-name">
-                            <a href={`http://localhost:9999/dhis-web-tracker-capture/index.html#/dashboard?tei=${el.trackedEntityInstance}&program=${el.program}&ou=iVgNipWEgvE`}>
+                            <a href={`${baseUrl}/dhis-web-tracker-capture/index.html#/dashboard?tei=${el.trackedEntityInstance}&program=${el.program}&ou=iVgNipWEgvE`}>
                                 <Button
                                     dataTest="dhis2-uicore-button"
                                     name="Primary button"
