@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDataQuery } from "@dhis2/app-runtime"
 import {
+    NoticeBox,
     Table,
     TableCell,
     TableRow,
@@ -52,6 +53,7 @@ const Workload = () => {
     const [workload, setWorkload] = useState()
     const [startDate, setStartDate] = useState(new Date());
     const [endDate, setEndDate] = useState(null);
+    const [typeError, setTypeError] = useState(false)
 
     const onChange = dates => {
         const [start, end] = dates;
@@ -65,38 +67,50 @@ const Workload = () => {
    }
 
     useEffect(() => {
-        console.log(data);
+        //console.log(data);
 
     }, [data])
 
     const calculateWorkload = () => {
         const startEpoch = startDate.getTime()
-        const endEpoch = endDate.getTime()
 
-        const merged = data.indexCases.events.concat(data.contactCases.events)
+        //Sjekker at endDate ikke er null
+        try{
+            const endEpoch = endDate.getTime()
 
-        const tmpWorkload = {
-            indexCases: 0,
-            contactCases: 0,
-            total: 0
-        }
+            const merged = data.indexCases.events.concat(data.contactCases.events)
 
-        merged.map(event => {
-
-            const dueDate = Date.parse(event.dueDate)
-            
-            if (dueDate >= startEpoch && dueDate <= endEpoch) {
-                if (event.program == "uYjxkTbwRNf") {
-                    tmpWorkload.indexCases++
-                } else if (event.program == "DM9n1bUw8W8") {
-                    tmpWorkload.contactCases++
-                } else {
-                    console.log("Program not recognized")
-                }
-                tmpWorkload.total++
+            const tmpWorkload = {
+                indexCases: 0,
+                contactCases: 0,
+                total: 0
             }
-        })
-        setWorkload(tmpWorkload)
+            
+            merged.map(event => {
+
+                const dueDate = Date.parse(event.dueDate)
+                
+                if (dueDate >= startEpoch && dueDate <= endEpoch) {
+                    if (event.program == "uYjxkTbwRNf") {
+                        tmpWorkload.indexCases++
+                    } else if (event.program == "DM9n1bUw8W8") {
+                        tmpWorkload.contactCases++
+                    } else {
+                        console.log("Program not recognized")
+                    }
+                    tmpWorkload.total++
+                } 
+            })
+            setWorkload(tmpWorkload), setTypeError(false)
+        }
+        catch (e){
+            //Treng berre ein av desse kanskje?
+            if(e instanceof TypeError && endDate === null){
+                setTypeError(true);
+                //bedre med metode enn state?
+            }
+            
+        }
     }
 
     return (
@@ -123,6 +137,19 @@ const Workload = () => {
             />
             </>
         </section>
+        
+        {!typeError &&
+        <p>Velg startdato og sluttdato for når du ønsker å vite arbeidsmengden</p>
+        }
+        {typeError && 
+            <NoticeBox 
+                dataTest="dhis2-uicore-noticebox"
+                title="Velg en sluttdato"
+                warning
+                >
+                Husk å velg en sluttdato. Nå er det bare valgt en startdato.
+            </NoticeBox>
+        }
             <DatePicker
                 selected={startDate}
                 onChange={onChange}
@@ -130,6 +157,7 @@ const Workload = () => {
                 endDate={endDate}
                 selectsRange
                 inline
+                
             />
             <Button
                 dataTest="dhis2-uicore-button"
