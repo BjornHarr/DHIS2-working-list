@@ -36,7 +36,7 @@ const CasesTable = (props) => {
             </TableHead>
             <TableBody>
                 {data.map(el => (
-                    <TableRow>
+                    <TableRow key={el.trackedEntityInstance}>
                         <TableCell dataTest="details-first-name">
                             {el.first_name}
                         </TableCell>
@@ -70,7 +70,7 @@ const CasesTable = (props) => {
                                     name="Basic button"
                                     onClick={(event) => displayOverlay(event)}
                                     type="button"
-                                    value={el.relationships}
+                                    value={JSON.stringify(el.relationships)}
                                 >
                                     Contact cases
                                   </Button>

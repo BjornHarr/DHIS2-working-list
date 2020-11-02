@@ -68,6 +68,7 @@ const Cases = (props) => {
     }
 
     const findRelationships = (entityIds) => {
+        entityIds = JSON.parse(entityIds)
         const merged = mergeCases()
         const tmp = []
         entityIds.map(id => {
