@@ -3,7 +3,6 @@ import { useDataQuery } from "@dhis2/app-runtime"
 import { Menu, MenuItem, MenuSectionHeader, CircularLoader } from '@dhis2/ui';
 import i18n from '@dhis2/d2-i18n'
 import styles from './App.module.css';
-import ListSection from './components/ListSection';
 import Cases from './components/Cases';
 import Workload from './components/Workload';
 
@@ -29,9 +28,6 @@ const query = {
         }
     }
 }
-
-
-
 
 const MyApp = () => {
     const { loading, error, data } = useDataQuery(query)
