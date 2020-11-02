@@ -85,11 +85,9 @@ const Workload = () => {
                 contactCases: 0,
                 total: 0
             }
-
             merged.map(event => {
 
                 const dueDate = Date.parse(event.dueDate)
-
                 if (dueDate >= startEpoch && dueDate <= endEpoch) {
                     if (event.program == "uYjxkTbwRNf") {
                         tmpWorkload.indexCases++
@@ -204,7 +202,6 @@ const Workload = () => {
                                 <TableCell className="right-column">
                                     {workload.total}
                                 </TableCell>
-
                             </TableRow>
                         }
                     </TableBody>

@@ -17,22 +17,26 @@ import {
 import DropdownMenu from './DropdownMenu';
 import ContactOverlay from './ContactOverlay';
 
-const DetailView = (props) => {
+const Cases = (props) => {
     const { data } = props
     const [entityInstances, setEntityInstances] = useState()
     const [entityValues, setEntityValues] = useState([])
     const [dropdownValue, setDropdownValue] = useState("Index cases")
     const [showOverlay, setShowOverlay] = useState(false)
+    const [relationships, setRelationships] = useState()
 
     const programMapping = {
         uYjxkTbwRNf: "Index Case",
-        DM9n1bUw8W8: "Contact Case"
+        DM9n1bUw8W8: "Contact Case",
+        indexCase: "uYjxkTbwRNf",
+        contactCase: "DM9n1bUw8W8"
     }
 
     useEffect(() => {
         console.log("entityInstances: ", entityInstances)
         if (entityInstances !== undefined) {
-            reconstructAttributes(entityInstances)
+            const reconstructedEntities = reconstructAttributes(entityInstances)
+            setEntityValues(reconstructedEntities)
         }
 
     }, [entityInstances])
@@ -46,17 +50,39 @@ const DetailView = (props) => {
             })
             tmp.trackedEntityInstance = entity.trackedEntityInstance
             tmp.program = entity.programOwners[0].program
+            tmp.relationships = entity.relationships.map(relationship => relationship.from.trackedEntityInstance.trackedEntityInstance)
             entities.push(tmp)
-            tmp = []
+            tmp = {}
         })
-        setEntityValues(entities)
+        return entities
+
     }
 
-    const populateBoth = () => {
+    const mergeCases = () => {
         const merged = data.indexCases.trackedEntityInstances.concat(data.contactCases.trackedEntityInstances)
         return merged
     }
 
+    const displayOverlay = (event) => {
+        findRelationships(event.value)
+        setShowOverlay(true)
+    }
+
+    const findRelationships = (entityIds) => {
+        const merged = mergeCases()
+        const tmp = []
+        entityIds.map(id => {
+            const relatedEntities = merged.filter(entity => entity.trackedEntityInstance === id)
+            console.log("RE: ", relatedEntities);
+            tmp.push(relatedEntities)
+
+        })
+
+        console.log("flat: ", tmp.flat(1));
+
+        const reconstructedEntities = reconstructAttributes(tmp.flat(1))
+        setRelationships(reconstructedEntities)
+    }
 
     const dropdownCallback = (event) => {
         setDropdownValue(event.value)
@@ -68,7 +94,7 @@ const DetailView = (props) => {
                 setEntityInstances(data.contactCases.trackedEntityInstances)
                 break;
             case "Both":
-                setEntityInstances(populateBoth)
+                setEntityInstances(mergeCases)
                 break;
             default:
                 console.log("Unable to parse dropdown value");
@@ -90,7 +116,7 @@ const DetailView = (props) => {
             </DropdownButton>
 
             {showOverlay && (
-              <ContactOverlay/>
+                <ContactOverlay relationships={relationships} />
             )}
 
             {entityValues && (
@@ -113,7 +139,7 @@ const DetailView = (props) => {
                                 Details
       </TableCellHead>
                             <TableCellHead>
-      </TableCellHead>
+                            </TableCellHead>
                         </TableRowHead>
 
                     </TableHead>
@@ -147,18 +173,18 @@ const DetailView = (props) => {
                                 </TableCell>
 
                                 {programMapping[entity.program] == "Index Case" && (
-                                  <TableCell dataTest="deta-first-name">
-                                    <Button
-                                        dataTest="dhis2-uicore-button"
-                                        name="Basic button"
-                                        onClick={() => setShowOverlay(true)}
-                                        type="button"
-                                        value="default"
-                                    >
-                                        Contact cases
-                                    </Button>
-                                </TableCell>
-                              )}
+                                    <TableCell dataTest="deta-first-name">
+                                        <Button
+                                            dataTest="dhis2-uicore-button"
+                                            name="Basic button"
+                                            onClick={(event) => displayOverlay(event)}
+                                            type="button"
+                                            value={entity.relationships}
+                                        >
+                                            Contact cases
+                                        </Button>
+                                    </TableCell>
+                                )}
                             </TableRow>
                         ))
                         }
@@ -171,4 +197,4 @@ const DetailView = (props) => {
 
 };
 
-export default DetailView;
+export default Cases;
