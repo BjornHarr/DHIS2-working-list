@@ -72,12 +72,9 @@ const Cases = (props) => {
         const tmp = []
         entityIds.map(id => {
             const relatedEntities = merged.filter(entity => entity.trackedEntityInstance === id)
-            console.log("RE: ", relatedEntities);
             tmp.push(relatedEntities)
 
         })
-
-        console.log("flat: ", tmp.flat(1));
 
         const reconstructedEntities = reconstructAttributes(tmp.flat(1))
         setRelationships(reconstructedEntities)

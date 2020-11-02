@@ -13,7 +13,6 @@ const ContactOverlay = (props) => {
       onClose={closeOverlay}
       position="top"
     >
-      {console.log("REL: ", relationships)}
       <ModalTitle dataTest="dhis2-uicore-modaltitle">
         Contact cases
       </ModalTitle>
