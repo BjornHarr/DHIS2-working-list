@@ -116,7 +116,7 @@ const Cases = (props) => {
             </DropdownButton>
 
             {showOverlay && (
-                <ContactOverlay relationships={relationships} />
+                <ContactOverlay relationships={relationships} closeOverlay={() => setShowOverlay(false)} />
             )}
 
             {entityValues && (

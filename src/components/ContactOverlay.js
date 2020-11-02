@@ -5,7 +5,7 @@ import { Modal, ModalContent, ModalTitle } from '@dhis2/ui';
 
 
 const ContactOverlay = (props) => {
-  const { relationships } = props
+  const { relationships, closeOverlay } = props
 
   const programMapping = {
     uYjxkTbwRNf: "Index Case",
@@ -17,7 +17,7 @@ const ContactOverlay = (props) => {
   return (
     <Modal
       dataTest="dhis2-uicore-modal"
-
+      onClose={closeOverlay}
       position="top"
     >
       {console.log("REL: ", relationships)}
