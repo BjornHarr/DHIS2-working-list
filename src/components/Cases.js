@@ -1,19 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { useDataQuery } from "@dhis2/app-runtime"
 import './Cases.css';
 
-import {
-    Table,
-    TableHead,
-    TableRowHead,
-    TableCellHead,
-    TableCell,
-    TableRow,
-    TableBody,
-    Button,
-    DropdownButton,
-    Divider
-} from '@dhis2/ui';
+import { DropdownButton } from '@dhis2/ui';
 import DropdownMenu from './DropdownMenu';
 import ContactOverlay from './ContactOverlay';
 import CasesTable from './CasesTable';
@@ -25,11 +13,6 @@ const Cases = (props) => {
     const [dropdownValue, setDropdownValue] = useState("Index cases")
     const [showOverlay, setShowOverlay] = useState(false)
     const [relationships, setRelationships] = useState()
-
-    const programMapping = {
-        indexCase: "uYjxkTbwRNf",
-        contactCase: "DM9n1bUw8W8"
-    }
 
     useEffect(() => {
         console.log("entityInstances: ", entityInstances)

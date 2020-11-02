@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react';
-import { useDataQuery } from "@dhis2/app-runtime";
+import React from 'react';
 import CasesTable from './CasesTable'
 import { Modal, ModalContent, ModalTitle } from '@dhis2/ui';
 
