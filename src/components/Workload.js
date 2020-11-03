@@ -114,7 +114,36 @@ const Workload = () => {
     return (
         <div id="workload-content">
             <h1>Workload</h1>
-            <section>
+            
+
+            {!typeError &&
+                <p>Velg startdato og sluttdato for når du ønsker å vite arbeidsmengden</p>
+            }
+            {typeError &&
+                <NoticeBox className="notice-box"
+                    dataTest="dhis2-uicore-noticebox"
+                    title="Velg en sluttdato"
+                    warning
+                >
+                    Husk å velg en sluttdato. Nå er det bare valgt en startdato.
+            </NoticeBox>
+            }
+
+            <section className="infoTable">
+            <div className="date-picker">
+                <DatePicker
+                    selected={startDate}
+                    onChange={onChange}
+                    startDate={startDate}
+                    endDate={endDate}
+                    selectsRange
+                    inline
+
+                />
+            </div>
+            <div className="submit-group">
+            
+            <section className="switches"> 
                 <>
                     <SwitchField
                         checked={tglSwitch.indexcases}
@@ -134,41 +163,17 @@ const Workload = () => {
                     />
                 </>
             </section>
-
-            {!typeError &&
-                <p>Velg startdato og sluttdato for når du ønsker å vite arbeidsmengden</p>
-            }
-            {typeError &&
-                <NoticeBox
-                    dataTest="dhis2-uicore-noticebox"
-                    title="Velg en sluttdato"
-                    warning
+                <Button className="submit-button"
+                    dataTest="dhis2-uicore-button"
+                    name="Primary button"
+                    primary
+                    type="button"
+                    value="default"
+                    onClick={calculateWorkload}
                 >
-                    Husk å velg en sluttdato. Nå er det bare valgt en startdato.
-            </NoticeBox>
-            }
-            <div className="date-picker">
-                <DatePicker
-                    selected={startDate}
-                    onChange={onChange}
-                    startDate={startDate}
-                    endDate={endDate}
-                    selectsRange
-                    inline
-
-                />
+                    Submit
+                </Button>
             </div>
-            <Button
-                dataTest="dhis2-uicore-button"
-                name="Primary button"
-                primary
-                type="button"
-                value="default"
-                onClick={calculateWorkload}
-            >
-                Submit
-                            </Button>
-
             {workload && (
 
                 <Table suppressZebraStriping className="workload-table">
@@ -207,6 +212,7 @@ const Workload = () => {
                     </TableBody>
                 </Table >
             )}
+            </section>
         </div>
     );
 }
