@@ -64,7 +64,7 @@ const Cases = (props) => {
         console.log(reconstructedEntities)
         setRelationships(reconstructedEntities)
     }
-    
+
 
     const dropdownCallback = (event) => {
         setDropdownValue(event.value)
@@ -102,7 +102,7 @@ const Cases = (props) => {
             )}
 
             {entityValues && (
-                <CasesTable data={entityValues} displayOverlay={displayOverlay} />
+                <CasesTable viewContext={dropdownValue} data={entityValues} displayOverlay={displayOverlay} />
             )}
         </>
     )

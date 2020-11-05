@@ -16,7 +16,7 @@ const ContactOverlay = (props) => {
         Contact cases
       </ModalTitle>
       <ModalContent dataTest="dhis2-uicore-modalcontent">
-        <CasesTable data={relationships} />
+        <CasesTable viewContext={"Contact cases"} data={relationships} />
       </ModalContent>
     </Modal>
   )
