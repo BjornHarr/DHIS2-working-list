@@ -118,7 +118,7 @@ const Workload = () => {
     return (
         <div id="workload-content">
             <h1>Workload</h1>
-            
+            {/* {console.log(data)} */}
 
             {!typeError &&
                 <p>Velg startdato og sluttdato for når du ønsker å vite arbeidsmengden</p>
