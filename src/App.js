@@ -75,7 +75,7 @@ const MyApp = () => {
     const { loading, data } = useDataQuery(query)
     const [workload, setWorkload] = useState()
     const [startDate, setStartDate] = useState(new Date());
-    const [endDate, setEndDate] = useState(null);
+    const [endDate, setEndDate] = useState(new Date());
     const [typeError, setTypeError] = useState(false)
     const [tableData, setTableData] = useState()
     const [dropdownValue, setDropdownValue] = useState("Index cases")
@@ -85,6 +85,10 @@ const MyApp = () => {
         console.log("DATA: ", data);
     }, [data])
 
+    useEffect(() => {
+        calculateWorkload()
+        console.log("enddate: ", endDate);
+    }, [endDate])
 
     useEffect(() => {
         console.log("WORKLOAD: ", workload);
@@ -106,7 +110,6 @@ const MyApp = () => {
         setStartDate(start);
         setEndDate(end);
     };
-
 
     const calculateWorkload = () => {
         const startEpoch = startDate.getTime()
@@ -156,7 +159,8 @@ const MyApp = () => {
                                 <h1>Covid-19</h1>
                                 {!typeError &&
                                     <div className={styles.wrapperP}>
-                                        <p>Choose a start-end and end-date {'\n'} for when  you want the workload</p>
+                                        <h4>Workload</h4>
+                                        <p>Choose a start-end and end-date {'\n'} to get the workload</p>
                                     </div>
                                 }
                                 {typeError &&
@@ -166,7 +170,7 @@ const MyApp = () => {
                                         warning
                                     >
                                         Remember to choose a start and end date. {'\n'} Now there's just a start date.
-            </NoticeBox>
+                                 </NoticeBox>
                                 }
 
                                 <section className={styles.infoTable}>
@@ -182,11 +186,27 @@ const MyApp = () => {
 
                                         />
                                     </div>
-
+                                    
+                                <DropdownButton
+                                    component={<DropdownMenu callback={(event) => 
+                                        setDropdownValue(event.value)
+                                    } />}
+                                    dataTest="dhis2-uicore-dropdownbutton"
+                                    name="default"
+                                    secondary
+                                    large
+                                    value={dropdownValue}
+                                    className={styles.dropDown}
+                                >
+                                    {dropdownValue}
+                                </DropdownButton>
+                                
                                     {workload && (
-
-                                        <Table suppressZebraStriping className="workload-table">
+                                        
+                                        <Table suppressZebraStriping className={styles.workloadTable}>
+                                            {console.log("wl",workload)}
                                             <TableBody>
+                                                
                                                 {(dropdownValue == "Index cases" || dropdownValue == "Both") &&
                                                     <TableRow>
                                                         <TableCell className="left-column">
@@ -223,27 +243,6 @@ const MyApp = () => {
                                     )}
                                 </section>
 
-                                <DropdownButton
-                                    component={<DropdownMenu callback={(event) => setDropdownValue(event.value)} />}
-                                    dataTest="dhis2-uicore-dropdownbutton"
-                                    name="default"
-                                    secondary
-                                    large
-                                    value={dropdownValue}
-                                    className={styles.dropDown}
-                                >
-                                    {dropdownValue}
-                                </DropdownButton>
-                                <Button className="submit-button"
-                                    dataTest="dhis2-uicore-button"
-                                    name="Primary button"
-                                    primary
-                                    type="button"
-                                    value="default"
-                                    onClick={calculateWorkload}
-                                >
-                                    Submit
-                </Button>
                             </div>
 
                         </nav>

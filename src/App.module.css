@@ -20,6 +20,8 @@
     align-items: end;
     margin: 0;
 }
+
+h4
 p{
    margin: 0; 
 }
@@ -45,8 +47,13 @@ p{
     width: 12em;
 }
 
-.submit-button{
+.submitButton{
     flex-direction: row;
     align-self: flex-start;
     margin-top: 2rem;
+    margin-left: 1rem;
+}
+
+.workloadTable {
+    margin-top: 1rem;
 }
