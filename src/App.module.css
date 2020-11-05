@@ -9,14 +9,15 @@
 }
 
 .flexContainer {
-    display: flex;
-    justify-content: space-evenly;
-    margin: 15px;
+    
 }
 
 .menu {
     border-right: 1px solid rgb(128, 128, 128, 0.5);
     grid-area: sidebar;
+    width: 30vw;
+    padding-left: 1.5em;
+    padding-right: 1.5em;
 }
 
 .main {

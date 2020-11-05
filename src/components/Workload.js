@@ -13,6 +13,8 @@ import enGb from 'date-fns/locale/en-GB';
 import DatePicker, { registerLocale } from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import './Workload.css';
+import { DropdownButton } from '@dhis2/ui';
+import DropdownMenu from './DropdownMenu';
 
 const query = {
     indexCases: {
@@ -55,6 +57,7 @@ const Workload = () => {
     const [startDate, setStartDate] = useState(new Date());
     const [endDate, setEndDate] = useState(null);
     const [typeError, setTypeError] = useState(false)
+    const [dropdownValue, setDropdownValue] = useState("Index cases")
 
     const onChange = dates => {
         const [start, end] = dates;
@@ -112,6 +115,23 @@ const Workload = () => {
         }
     }
 
+    const dropdownCallback = (event) => {
+        setDropdownValue(event.value)
+        switch (event.value) {
+            case "Index cases":
+                setEntityInstances(data.indexCases.trackedEntityInstances)
+                break;
+            case "Contact cases":
+                setEntityInstances(data.contactCases.trackedEntityInstances)
+                break;
+            case "Both":
+                setEntityInstances(mergeCases)
+                break;
+            default:
+                console.log("Unable to parse dropdown value");
+        }
+    }
+
     //Setter mandag som første dag i uka
     registerLocale('en-gb', enGb);
 
@@ -121,7 +141,7 @@ const Workload = () => {
             {/* {console.log(data)} */}
 
             {!typeError &&
-                <p>Velg startdato og sluttdato for når du ønsker å vite arbeidsmengden</p>
+                <p>Velg startdato og sluttdato for når {'\n'} du ønsker å vite arbeidsmengden</p>
             }
             {typeError &&
                 <NoticeBox className="notice-box"
@@ -129,7 +149,7 @@ const Workload = () => {
                     title="Velg en sluttdato"
                     warning
                 >
-                    Husk å velg en sluttdato. Nå er det bare valgt en startdato.
+                    Husk å velg en sluttdato. {'\n'} Nå er det bare valgt en startdato.
             </NoticeBox>
             }
 
@@ -147,8 +167,8 @@ const Workload = () => {
                 />
             </div>
             <div className="submit-group">
-            
-            <section className="switches"> 
+
+            <section className="switches">
                 <>
                     <SwitchField
                         checked={tglSwitch.indexcases}
@@ -218,6 +238,19 @@ const Workload = () => {
                 </Table >
             )}
             </section>
+
+            <DropdownButton
+                component={<DropdownMenu callback={dropdownCallback} />}
+                dataTest="dhis2-uicore-dropdownbutton"
+                name="default"
+                secondary
+                large
+                value={dropdownValue}
+                className='drop-down'
+            >
+                {dropdownValue}
+            </DropdownButton>
+            
         </div>
     );
 }

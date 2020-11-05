@@ -5,6 +5,18 @@ import i18n from '@dhis2/d2-i18n'
 import styles from './App.module.css';
 import Cases from './components/Cases';
 import Workload from './components/Workload';
+import {
+    NoticeBox,
+    Table,
+    TableCell,
+    TableRow,
+    TableBody,
+    Button,
+    SwitchField
+} from '@dhis2/ui';
+import enGb from 'date-fns/locale/en-GB';
+import DatePicker, { registerLocale } from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 
 const query = {
@@ -42,11 +54,8 @@ const MyApp = () => {
             ) : (
                     <>
                         <nav className={styles.menu} data-test-id="menu">
-                            <MenuSectionHeader label={i18n.t('Menu')} />
-                            <Menu>
-                                <MenuItem label={i18n.t('Cases')} dataTest="menu-cases" onClick={() => setSelected("Cases")} />
-                                <MenuItem label={i18n.t('Workload')} dataTest="menu-workload" onClick={() => setSelected("Workload")} />
-                            </Menu>
+                        <Workload />
+
                         </nav>
                         <main className={styles.main}>
                             {selected && (
