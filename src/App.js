@@ -1,8 +1,7 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useDataQuery } from "@dhis2/app-runtime"
 import styles from './App.module.css';
 import Cases from './components/Cases';
-import Workload from './components/Workload';
 import {
     NoticeBox,
     Table,
@@ -19,7 +18,6 @@ import DatePicker, { registerLocale } from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import './components/Workload.css';
 import DropdownMenu from './components/DropdownMenu';
-
 
 const query = {
     indexCases: {
@@ -41,11 +39,10 @@ const query = {
             ouMode: "SELECTED",
         }
     },
-    indexEvents: {
+    contactEvents: {
         resource: "events",
         params: {
             fields: "*",
-            program: "uYjxkTbwRNf",
             orgUnit: "iVgNipWEgvE",
             ouMode: "SELECTED",
             programStatus: "ACTIVE",
@@ -55,15 +52,14 @@ const query = {
             totalPages: true
         }
     },
-    contactEvents: {
+    indexEvents: {
         resource: "events",
         params: {
             fields: "*",
-            program: "DM9n1bUw8W8",
             orgUnit: "iVgNipWEgvE",
             ouMode: "SELECTED",
             programStatus: "ACTIVE",
-            programStage: "sAV9jAajr8x",
+            programStage: "oqsk2Jv4k3s",
             status: "SCHEDULE",
             page: 1,
             totalPages: true
@@ -71,8 +67,13 @@ const query = {
     }
 }
 
+/*
+follow up: sAV9jAajr8x
+health status: oqsk2Jv4k3s
+*/
+
 const MyApp = () => {
-    const { loading, error, data } = useDataQuery(query)
+    const { loading, data } = useDataQuery(query)
     const [selected, setSelected] = useState("Cases")
 
     const [tglSwitch, setTglSwitch] = useState({
@@ -83,7 +84,17 @@ const MyApp = () => {
     const [startDate, setStartDate] = useState(new Date());
     const [endDate, setEndDate] = useState(null);
     const [typeError, setTypeError] = useState(false)
+    const [entityInstances, setEntityInstances] = useState()
     const [dropdownValue, setDropdownValue] = useState("Index cases")
+
+    useEffect(() => {
+        console.log("DATA: ", data);
+    }, [data])
+
+
+    useEffect(() => {
+        console.log("WORKLOAD: ", workload);
+    }, [workload])
 
     const onChange = dates => {
         const [start, end] = dates;
@@ -104,7 +115,6 @@ const MyApp = () => {
             const endEpoch = endDate.getTime()
 
             const merged = data.indexEvents.events.concat(data.contactEvents.events)
-            console.log(merged)
             const tmpWorkload = {
                 indexCases: 0,
                 contactCases: 0,
@@ -136,23 +146,6 @@ const MyApp = () => {
         }
     }
 
-    const dropdownCallback = (event) => {
-        setDropdownValue(event.value)
-        switch (event.value) {
-            case "Index cases":
-                setEntityInstances(data.indexCases.trackedEntityInstances)
-                break;
-            case "Contact cases":
-                setEntityInstances(data.contactCases.trackedEntityInstances)
-                break;
-            case "Both":
-                setEntityInstances(mergeCases)
-                break;
-            default:
-                console.log("Unable to parse dropdown value");
-        }
-    }
-
     //Setter mandag som første dag i uka
     registerLocale('en-gb', enGb);
 
@@ -168,7 +161,6 @@ const MyApp = () => {
                         <nav className={styles.menu} data-test-id="menu">
                             <div id="workload-content">
                                 <h1>Workload</h1>
-                                {/* {console.log(data)} */}
 
                                 {!typeError &&
                                     <p>Velg startdato og sluttdato for når {'\n'} du ønsker å vite arbeidsmengden</p>
@@ -270,7 +262,7 @@ const MyApp = () => {
                                 </section>
 
                                 <DropdownButton
-                                    component={<DropdownMenu callback={dropdownCallback} />}
+                                    component={<DropdownMenu callback={(event) => setDropdownValue(event.value)} />}
                                     dataTest="dhis2-uicore-dropdownbutton"
                                     name="default"
                                     secondary
@@ -285,13 +277,7 @@ const MyApp = () => {
 
                         </nav>
                         <main className={styles.main}>
-                            {selected && (
-                                selected == "Cases" ? (
-                                    <Cases data={data} />
-                                ) : (
-                                        <Workload />
-                                    )
-                            )}
+                            <Cases data={data} viewContext={dropdownValue} />
                         </main>
                     </>
                 )
