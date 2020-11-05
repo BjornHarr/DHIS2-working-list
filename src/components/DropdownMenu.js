@@ -10,7 +10,7 @@ const DropdownMenu = ({ callback }) => {
         <FlyoutMenu
             dataTest="dhis2-uicore-menu"
             maxHeight="auto"
-            maxWidth="380px"
+            maxWidth="300px"
         >
             <MenuItem
                 dataTest="dhis2-uicore-menuitem"

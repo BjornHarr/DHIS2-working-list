@@ -10,7 +10,6 @@ import {
     TableRow,
     TableBody,
     Button,
-    SwitchField,
     CircularLoader,
     DropdownButton
 } from '@dhis2/ui';
@@ -166,25 +165,27 @@ const MyApp = () => {
             ) : (
                     <>
                         <nav className={styles.menu} data-test-id="menu">
-                            <div id="workload-content">
-                                <h1>Workload</h1>
+                            <div className={styles.workloadContent}>
+                                <h1>Covid-19</h1>
                                 {/* {console.log(data)} */}
 
                                 {!typeError &&
-                                    <p>Velg startdato og sluttdato for når {'\n'} du ønsker å vite arbeidsmengden</p>
+                                    <div className={styles.wrapperP}>
+                                    <p>Choose a start-end and end-date {'\n'} for when  you want the workload</p>
+                                    </div>
                                 }
                                 {typeError &&
-                                    <NoticeBox className="notice-box"
+                                    <NoticeBox className={styles.noticeBox}
                                         dataTest="dhis2-uicore-noticebox"
                                         title="Velg en sluttdato"
                                         warning
                                     >
-                                        Husk å velg en sluttdato. {'\n'} Nå er det bare valgt en startdato.
+                                       Remember to choose a start and end date. {'\n'} Now there's just a start date.
             </NoticeBox>
                                 }
 
-                                <section className="infoTable">
-                                    <div className="date-picker">
+                                <section className={styles.infoTable}>
+                                    <div className={styles.datePicker}>
                                         <DatePicker
                                             locale="en-gb"
                                             selected={startDate}
@@ -196,9 +197,9 @@ const MyApp = () => {
 
                                         />
                                     </div>
-                                    <div className="submit-group">
+                                    
 
-                                        <section className="switches">
+                                        {/* <section className="switches">
                                             <>
                                                 <SwitchField
                                                     checked={tglSwitch.indexcases}
@@ -217,18 +218,8 @@ const MyApp = () => {
                                                     value="unchecked"
                                                 />
                                             </>
-                                        </section>
-                                        <Button className="submit-button"
-                                            dataTest="dhis2-uicore-button"
-                                            name="Primary button"
-                                            primary
-                                            type="button"
-                                            value="default"
-                                            onClick={calculateWorkload}
-                                        >
-                                            Submit
-                </Button>
-                                    </div>
+                                        </section> */}
+                                    
                                     {workload && (
 
                                         <Table suppressZebraStriping className="workload-table">
@@ -276,11 +267,20 @@ const MyApp = () => {
                                     secondary
                                     large
                                     value={dropdownValue}
-                                    className='drop-down'
+                                    className={styles.dropDown}
                                 >
                                     {dropdownValue}
                                 </DropdownButton>
-
+                                <Button className="submit-button"
+                                            dataTest="dhis2-uicore-button"
+                                            name="Primary button"
+                                            primary
+                                            type="button"
+                                            value="default"
+                                            onClick={calculateWorkload}
+                                        >
+                                            Submit
+                </Button>
                             </div>
 
                         </nav>
