@@ -164,7 +164,7 @@ const MyApp = () => {
 
                                 {!typeError &&
                                     <div className={styles.wrapperP}>
-                                    <p>Choose a start-end and end-date {'\n'} for when  you want the workload</p>
+                                        <p>Choose a start-end and end-date {'\n'} for when  you want the workload</p>
                                     </div>
                                 }
                                 {typeError &&
@@ -173,7 +173,7 @@ const MyApp = () => {
                                         title="Velg en sluttdato"
                                         warning
                                     >
-                                       Remember to choose a start and end date. {'\n'} Now there's just a start date.
+                                        Remember to choose a start and end date. {'\n'} Now there's just a start date.
             </NoticeBox>
                                 }
 
@@ -190,9 +190,9 @@ const MyApp = () => {
 
                                         />
                                     </div>
-                                    
 
-                                        {/* <section className="switches">
+
+                                    {/* <section className="switches">
                                             <>
                                                 <SwitchField
                                                     checked={tglSwitch.indexcases}
@@ -212,12 +212,12 @@ const MyApp = () => {
                                                 />
                                             </>
                                         </section> */}
-                                    
+
                                     {workload && (
 
                                         <Table suppressZebraStriping className="workload-table">
                                             <TableBody>
-                                                {tglSwitch.indexcases &&
+                                                {(dropdownValue == "Index cases" || dropdownValue == "Both") &&
                                                     <TableRow>
                                                         <TableCell className="left-column">
                                                             Index Cases
@@ -227,7 +227,7 @@ const MyApp = () => {
                                                         </TableCell>
                                                     </TableRow>
                                                 }
-                                                {tglSwitch.contacts &&
+                                                {(dropdownValue == "Contact cases" || dropdownValue == "Both") &&
                                                     <TableRow>
                                                         <TableCell className="left-column">
                                                             Contacts
@@ -238,7 +238,7 @@ const MyApp = () => {
 
                                                     </TableRow>
                                                 }
-                                                {(tglSwitch.indexcases && tglSwitch.contacts) &&
+                                                {dropdownValue == "Both" &&
                                                     <TableRow>
                                                         <TableCell className="left-column">
                                                             Total
@@ -265,14 +265,14 @@ const MyApp = () => {
                                     {dropdownValue}
                                 </DropdownButton>
                                 <Button className="submit-button"
-                                            dataTest="dhis2-uicore-button"
-                                            name="Primary button"
-                                            primary
-                                            type="button"
-                                            value="default"
-                                            onClick={calculateWorkload}
-                                        >
-                                            Submit
+                                    dataTest="dhis2-uicore-button"
+                                    name="Primary button"
+                                    primary
+                                    type="button"
+                                    value="default"
+                                    onClick={calculateWorkload}
+                                >
+                                    Submit
                 </Button>
                             </div>
 
