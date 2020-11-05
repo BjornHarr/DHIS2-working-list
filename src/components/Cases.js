@@ -1,42 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import './Cases.css';
-
-import { DropdownButton } from '@dhis2/ui';
-import DropdownMenu from './DropdownMenu';
 import ContactOverlay from './ContactOverlay';
 import CasesTable from './CasesTable';
 
 const Cases = (props) => {
     const { data, viewContext } = props
-    const [entityInstances, setEntityInstances] = useState()
     const [entityValues, setEntityValues] = useState([])
     const [showOverlay, setShowOverlay] = useState(false)
     const [relationships, setRelationships] = useState()
 
     useEffect(() => {
-        switch (viewContext) {
-            case "Index cases":
-                setEntityInstances(data.indexCases.trackedEntityInstances)
-                break;
-            case "Contact cases":
-                setEntityInstances(data.contactCases.trackedEntityInstances)
-                break;
-            case "Both":
-                setEntityInstances(mergeCases)
-                break;
-            default:
-                console.log("Unable to parse dropdown value");
-        }
-    }, [viewContext])
-
-    useEffect(() => {
-        console.log("entityInstances: ", entityInstances)
-        if (entityInstances !== undefined) {
-            const reconstructedEntities = reconstructAttributes(entityInstances)
+        console.log("DATA: ", data)
+        if (data) {
+            const reconstructedEntities = reconstructAttributes(data)
             setEntityValues(reconstructedEntities)
         }
 
-    }, [entityInstances])
+    }, [data])
 
     const reconstructAttributes = (entityInstances) => {
         let entities = []
@@ -82,12 +62,15 @@ const Cases = (props) => {
 
     return (
         <>
+            {data.length < 1 ? (
+                <h1>No values</h1>
+            ) : (
+                    entityValues && (
+                        <CasesTable viewContext={viewContext} data={entityValues} displayOverlay={displayOverlay} />
+                    )
+                )}
             {showOverlay && (
                 <ContactOverlay relationships={relationships} closeOverlay={() => setShowOverlay(false)} />
-            )}
-
-            {entityValues && (
-                <CasesTable viewContext={viewContext} data={entityValues} displayOverlay={displayOverlay} />
             )}
         </>
     )

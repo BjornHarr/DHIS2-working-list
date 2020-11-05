@@ -73,15 +73,12 @@ health status: oqsk2Jv4k3s
 
 const MyApp = () => {
     const { loading, data } = useDataQuery(query)
-    const [selected, setSelected] = useState("Cases")
-
     const [workload, setWorkload] = useState()
     const [startDate, setStartDate] = useState(new Date());
     const [endDate, setEndDate] = useState(new Date());
     const [typeError, setTypeError] = useState(false)
-    const [entityInstances, setEntityInstances] = useState()
+    const [tableData, setTableData] = useState()
     const [dropdownValue, setDropdownValue] = useState("Index cases")
-    //Setter mandag som første dag i uka i kalenderen
     registerLocale('en-gb', enGb);
 
     useEffect(() => {
@@ -95,6 +92,17 @@ const MyApp = () => {
 
     useEffect(() => {
         console.log("WORKLOAD: ", workload);
+        if (workload) {
+            const teiMatches = []
+            const teiFilter = workload.indexCases.concat(workload.contactCases)
+            teiFilter.map(tei => {
+                const indexMatches = data.indexCases.trackedEntityInstances.filter(entity => entity.trackedEntityInstance === tei)
+                const contactMatces = data.contactCases.trackedEntityInstances.filter(entity => entity.trackedEntityInstance === tei)
+                teiMatches.push(...indexMatches, ...contactMatces)
+            })
+            setTableData(teiMatches)
+        }
+
     }, [workload])
 
     const onChange = dates => {
@@ -106,43 +114,38 @@ const MyApp = () => {
     const calculateWorkload = () => {
         const startEpoch = startDate.getTime()
 
-        //Sjekker at endDate ikke er null
         try {
             const endEpoch = endDate.getTime()
 
             const merged = data.indexEvents.events.concat(data.contactEvents.events)
             const tmpWorkload = {
-                indexCases: 0,
-                contactCases: 0,
-                total: 0
+                indexCases: [],
+                contactCases: [],
+                total: 0,
             }
             merged.map(event => {
 
                 const dueDate = Date.parse(event.dueDate)
                 if (dueDate >= startEpoch && dueDate <= endEpoch) {
                     if (event.program == "uYjxkTbwRNf") {
-                        tmpWorkload.indexCases++
+                        tmpWorkload.indexCases.push(event.trackedEntityInstance)
                     } else if (event.program == "DM9n1bUw8W8") {
-                        tmpWorkload.contactCases++
+                        tmpWorkload.contactCases.push(event.trackedEntityInstance)
                     } else {
                         console.log("Program not recognized")
                     }
                     tmpWorkload.total++
                 }
             })
-            setWorkload(tmpWorkload), setTypeError(false)
+            setWorkload(tmpWorkload)
+            setTypeError(false)
         }
         catch (e) {
-            //Treng berre ein av desse kanskje?
             if (e instanceof TypeError && endDate === null) {
                 setTypeError(true);
-                //bedre med metode enn state?
             }
-
         }
     }
-
-    
 
     return (
         <div className={styles.container}>
@@ -183,7 +186,6 @@ const MyApp = () => {
 
                                         />
                                     </div>
-
                                     
                                 <DropdownButton
                                     component={<DropdownMenu callback={(event) => 
@@ -211,7 +213,7 @@ const MyApp = () => {
                                                             Index Cases
                         </TableCell>
                                                         <TableCell className="right-column">
-                                                            {workload.indexCases}
+                                                            {workload.indexCases.length}
                                                         </TableCell>
                                                     </TableRow>
                                                 }
@@ -221,7 +223,7 @@ const MyApp = () => {
                                                             Contacts
                         </TableCell>
                                                         <TableCell className="right-column">
-                                                            {workload.contactCases}
+                                                            {workload.contactCases.length}
                                                         </TableCell>
 
                                                     </TableRow>
@@ -244,9 +246,11 @@ const MyApp = () => {
                             </div>
 
                         </nav>
-                        <main className={styles.main}>
-                            <Cases data={data} viewContext={dropdownValue} />
-                        </main>
+                        {tableData && (
+                            <main className={styles.main}>
+                                <Cases data={tableData} viewContext={dropdownValue} />
+                            </main>
+                        )}
                     </>
                 )
             }
