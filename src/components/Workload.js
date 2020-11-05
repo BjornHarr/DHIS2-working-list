@@ -9,7 +9,8 @@ import {
     Button,
     SwitchField
 } from '@dhis2/ui';
-import DatePicker from "react-datepicker";
+import enGb from 'date-fns/locale/en-GB';
+import DatePicker, { registerLocale } from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import './Workload.css';
 
@@ -22,7 +23,7 @@ const query = {
             orgUnit: "iVgNipWEgvE",
             ouMode: "SELECTED",
             programStatus: "ACTIVE",
-            status: "ACTIVE",
+            status: "SCHEDULE",
             page: 1,
             totalPages: true
         }
@@ -35,7 +36,7 @@ const query = {
             orgUnit: "iVgNipWEgvE",
             ouMode: "SELECTED",
             programStatus: "ACTIVE",
-            status: "ACTIVE",
+            status: "SCHEDULE",
             page: 1,
             totalPages: true
         }
@@ -63,7 +64,7 @@ const Workload = () => {
 
     const switchChange = (event) => {
         setTglSwitch({ ...tglSwitch, [event.name]: event.checked })
-        //console.log(event);
+
     }
 
     useEffect(() => {
@@ -79,7 +80,7 @@ const Workload = () => {
             const endEpoch = endDate.getTime()
 
             const merged = data.indexCases.events.concat(data.contactCases.events)
-
+            console.log(merged)
             const tmpWorkload = {
                 indexCases: 0,
                 contactCases: 0,
@@ -111,6 +112,9 @@ const Workload = () => {
         }
     }
 
+    //Setter mandag som første dag i uka
+    registerLocale('en-gb', enGb);
+
     return (
         <div id="workload-content">
             <h1>Workload</h1>
@@ -132,6 +136,7 @@ const Workload = () => {
             <section className="infoTable">
             <div className="date-picker">
                 <DatePicker
+                    locale="en-gb"
                     selected={startDate}
                     onChange={onChange}
                     startDate={startDate}
