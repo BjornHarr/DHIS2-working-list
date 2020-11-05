@@ -73,18 +73,13 @@ health status: oqsk2Jv4k3s
 
 const MyApp = () => {
     const { loading, data } = useDataQuery(query)
-    const [selected, setSelected] = useState("Cases")
-
-    const [tglSwitch, setTglSwitch] = useState({
-        indexcases: true,
-        contacts: false,
-    });
     const [workload, setWorkload] = useState()
     const [startDate, setStartDate] = useState(new Date());
     const [endDate, setEndDate] = useState(null);
     const [typeError, setTypeError] = useState(false)
-    const [entityInstances, setEntityInstances] = useState()
+    const [tableData, setTableData] = useState()
     const [dropdownValue, setDropdownValue] = useState("Index cases")
+    registerLocale('en-gb', enGb);
 
     useEffect(() => {
         console.log("DATA: ", data);
@@ -93,6 +88,17 @@ const MyApp = () => {
 
     useEffect(() => {
         console.log("WORKLOAD: ", workload);
+        if (workload) {
+            const teiMatches = []
+            const teiFilter = workload.indexCases.concat(workload.contactCases)
+            teiFilter.map(tei => {
+                const indexMatches = data.indexCases.trackedEntityInstances.filter(entity => entity.trackedEntityInstance === tei)
+                const contactMatces = data.contactCases.trackedEntityInstances.filter(entity => entity.trackedEntityInstance === tei)
+                teiMatches.push(...indexMatches, ...contactMatces)
+            })
+            setTableData(teiMatches)
+        }
+
     }, [workload])
 
     const onChange = dates => {
@@ -101,54 +107,42 @@ const MyApp = () => {
         setEndDate(end);
     };
 
-    const switchChange = (event) => {
-        setTglSwitch({ ...tglSwitch, [event.name]: event.checked })
-
-    }
 
     const calculateWorkload = () => {
         const startEpoch = startDate.getTime()
 
-        //Sjekker at endDate ikke er null
         try {
             const endEpoch = endDate.getTime()
 
             const merged = data.indexEvents.events.concat(data.contactEvents.events)
             const tmpWorkload = {
-                indexCases: 0,
-                contactCases: 0,
-                total: 0
+                indexCases: [],
+                contactCases: [],
+                total: 0,
             }
             merged.map(event => {
 
                 const dueDate = Date.parse(event.dueDate)
                 if (dueDate >= startEpoch && dueDate <= endEpoch) {
                     if (event.program == "uYjxkTbwRNf") {
-                        tmpWorkload.indexCases++
+                        tmpWorkload.indexCases.push(event.trackedEntityInstance)
                     } else if (event.program == "DM9n1bUw8W8") {
-                        tmpWorkload.contactCases++
+                        tmpWorkload.contactCases.push(event.trackedEntityInstance)
                     } else {
                         console.log("Program not recognized")
                     }
                     tmpWorkload.total++
                 }
             })
-            setWorkload(tmpWorkload), setTypeError(false)
+            setWorkload(tmpWorkload)
+            setTypeError(false)
         }
         catch (e) {
-            //Treng berre ein av desse kanskje?
             if (e instanceof TypeError && endDate === null) {
                 setTypeError(true);
-                //bedre med metode enn state?
             }
-
         }
     }
-
-    //Setter mandag som første dag i uka
-    registerLocale('en-gb', enGb);
-
-
 
     return (
         <div className={styles.container}>
@@ -160,8 +154,6 @@ const MyApp = () => {
                         <nav className={styles.menu} data-test-id="menu">
                             <div className={styles.workloadContent}>
                                 <h1>Covid-19</h1>
-                                {/* {console.log(data)} */}
-
                                 {!typeError &&
                                     <div className={styles.wrapperP}>
                                         <p>Choose a start-end and end-date {'\n'} for when  you want the workload</p>
@@ -191,28 +183,6 @@ const MyApp = () => {
                                         />
                                     </div>
 
-
-                                    {/* <section className="switches">
-                                            <>
-                                                <SwitchField
-                                                    checked={tglSwitch.indexcases}
-                                                    dataTest="dhis2-uiwidgets-switchfield"
-                                                    label="Index cases"
-                                                    name="indexcases"
-                                                    onChange={switchChange}
-                                                    value="checked"
-                                                />
-                                                <SwitchField
-                                                    checked={tglSwitch.contacts}
-                                                    dataTest="dhis2-uiwidgets-switchfield"
-                                                    label="Contacts"
-                                                    name="contacts"
-                                                    onChange={switchChange}
-                                                    value="unchecked"
-                                                />
-                                            </>
-                                        </section> */}
-
                                     {workload && (
 
                                         <Table suppressZebraStriping className="workload-table">
@@ -223,7 +193,7 @@ const MyApp = () => {
                                                             Index Cases
                         </TableCell>
                                                         <TableCell className="right-column">
-                                                            {workload.indexCases}
+                                                            {workload.indexCases.length}
                                                         </TableCell>
                                                     </TableRow>
                                                 }
@@ -233,7 +203,7 @@ const MyApp = () => {
                                                             Contacts
                         </TableCell>
                                                         <TableCell className="right-column">
-                                                            {workload.contactCases}
+                                                            {workload.contactCases.length}
                                                         </TableCell>
 
                                                     </TableRow>
@@ -277,9 +247,11 @@ const MyApp = () => {
                             </div>
 
                         </nav>
-                        <main className={styles.main}>
-                            <Cases data={data} viewContext={dropdownValue} />
-                        </main>
+                        {tableData && (
+                            <main className={styles.main}>
+                                <Cases data={tableData} viewContext={dropdownValue} />
+                            </main>
+                        )}
                     </>
                 )
             }
