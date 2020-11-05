@@ -23,6 +23,7 @@ const query = {
             orgUnit: "iVgNipWEgvE",
             ouMode: "SELECTED",
             programStatus: "ACTIVE",
+            programStage: "sAV9jAajr8x",
             status: "SCHEDULE",
             page: 1,
             totalPages: true
@@ -36,6 +37,7 @@ const query = {
             orgUnit: "iVgNipWEgvE",
             ouMode: "SELECTED",
             programStatus: "ACTIVE",
+            programStage: "sAV9jAajr8x",
             status: "SCHEDULE",
             page: 1,
             totalPages: true
