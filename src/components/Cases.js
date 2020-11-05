@@ -7,12 +7,27 @@ import ContactOverlay from './ContactOverlay';
 import CasesTable from './CasesTable';
 
 const Cases = (props) => {
-    const { data } = props
+    const { data, viewContext } = props
     const [entityInstances, setEntityInstances] = useState()
     const [entityValues, setEntityValues] = useState([])
-    const [dropdownValue, setDropdownValue] = useState("Index cases")
     const [showOverlay, setShowOverlay] = useState(false)
     const [relationships, setRelationships] = useState()
+
+    useEffect(() => {
+        switch (viewContext) {
+            case "Index cases":
+                setEntityInstances(data.indexCases.trackedEntityInstances)
+                break;
+            case "Contact cases":
+                setEntityInstances(data.contactCases.trackedEntityInstances)
+                break;
+            case "Both":
+                setEntityInstances(mergeCases)
+                break;
+            default:
+                console.log("Unable to parse dropdown value");
+        }
+    }, [viewContext])
 
     useEffect(() => {
         console.log("entityInstances: ", entityInstances)
@@ -65,44 +80,14 @@ const Cases = (props) => {
         setRelationships(reconstructedEntities)
     }
 
-
-    const dropdownCallback = (event) => {
-        setDropdownValue(event.value)
-        switch (event.value) {
-            case "Index cases":
-                setEntityInstances(data.indexCases.trackedEntityInstances)
-                break;
-            case "Contact cases":
-                setEntityInstances(data.contactCases.trackedEntityInstances)
-                break;
-            case "Both":
-                setEntityInstances(mergeCases)
-                break;
-            default:
-                console.log("Unable to parse dropdown value");
-        }
-    }
-
     return (
         <>
-            <DropdownButton
-                component={<DropdownMenu callback={dropdownCallback} />}
-                dataTest="dhis2-uicore-dropdownbutton"
-                name="default"
-                secondary
-                large
-                value={dropdownValue}
-                className='drop-down'
-            >
-                {dropdownValue}
-            </DropdownButton>
-
             {showOverlay && (
                 <ContactOverlay relationships={relationships} closeOverlay={() => setShowOverlay(false)} />
             )}
 
             {entityValues && (
-                <CasesTable viewContext={dropdownValue} data={entityValues} displayOverlay={displayOverlay} />
+                <CasesTable viewContext={viewContext} data={entityValues} displayOverlay={displayOverlay} />
             )}
         </>
     )
