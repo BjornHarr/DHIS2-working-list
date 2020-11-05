@@ -61,8 +61,10 @@ const Cases = (props) => {
         })
 
         const reconstructedEntities = reconstructAttributes(tmp.flat(1))
+        console.log(reconstructedEntities)
         setRelationships(reconstructedEntities)
     }
+    
 
     const dropdownCallback = (event) => {
         setDropdownValue(event.value)
