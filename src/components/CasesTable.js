@@ -79,12 +79,13 @@ const CasesTable = (props) => {
                                         </g>
                                     </svg>}
                                     name="Basic button"
+                                    disabled={el.relationships.length > 0 ? false : true}
                                     onClick={(event) => displayOverlay(event)}
                                     type="button"
                                     value={JSON.stringify(el.relationships)}
 
                                 >
-                                    {el.relationships.length}
+                                    {String(el.relationships.length)}
                                 </Button>
                             </TableCell>
                         )}
