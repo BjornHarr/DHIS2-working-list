@@ -1,0 +1,50 @@
+.container {
+    width: 100%;
+    height: 100%;
+    font-size: 1rem;
+    display: grid;
+    grid-template-rows: 1fr;
+    grid-template-columns: minmax(200px, auto) 1fr;
+    grid-template-areas: "sidebar main";
+}
+
+.menu {
+    border-right: 1px solid rgb(128, 128, 128, 0.5);
+    grid-area: sidebar;
+    width: fit-content;
+    padding-left: 1.0em;
+    padding-right: 1.0em;
+}
+
+.workload-content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+}
+
+.wrapperP{
+    height: 118px;
+    width: 15em;
+    align-items: end;
+    margin: 0;
+}
+
+.left-column{
+    font-weight: bold;
+}
+
+.dropdown {
+    width: 15.1em;
+    margin: 1em 0;
+    justify-content: space-between !important;
+}
+
+.main {
+    grid-area: main;
+    padding: 1.5em;
+}
+
+.info-table{
+   margin-top: 0.5rem;
+}
