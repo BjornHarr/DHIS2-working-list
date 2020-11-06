@@ -8,7 +8,6 @@ import {
     TableCell,
     TableRow,
     TableBody,
-    Button,
     CircularLoader,
     DropdownButton
 } from '@dhis2/ui';
@@ -26,6 +25,7 @@ const query = {
             ouMode: "SELECTED",
             ou: "iVgNipWEgvE",
             programStatus: "ACTIVE"
+
         }
     },
     contactCases: {
@@ -47,8 +47,6 @@ const query = {
             programStage: "sAV9jAajr8x",
             status: "SCHEDULE",
             order: "dueDate:asc",
-            page: 1,
-            totalPages: true
         }
     },
     indexEvents: {
@@ -61,8 +59,6 @@ const query = {
             programStage: "oqsk2Jv4k3s",
             status: "SCHEDULE",
             order: "dueDate:asc",
-            page: 1,
-            totalPages: true
         }
     }
 }
@@ -78,9 +74,9 @@ const MyApp = () => {
     const [workload, setWorkload] = useState()
     let d = new Date()
     let c = new Date()
-    d.setHours(0,0,0,0)
+    d.setHours(0, 0, 0, 0)
     const [startDate, setStartDate] = useState(d);
-    c.setHours(2,3,5,9);
+    c.setHours(2, 3, 5, 9);
     const [endDate, setEndDate] = useState(c);
     const [typeError, setTypeError] = useState(false)
     const [tableData, setTableData] = useState()
@@ -207,21 +203,22 @@ const MyApp = () => {
                                         />
                                     </div>
 
-                                <DropdownButton
-                                    component={<DropdownMenu callback={(event) =>
-                                        setDropdownValue(event.value)
-                                    } />}
-                                    dataTest="dhis2-uicore-dropdownbutton"
-                                    name="default"
-                                    secondary
-                                    large
-                                    value={dropdownValue}
-                                    className="dropdown"
-                                >
-                                    {dropdownValue}
-                                </DropdownButton>
+                                    <DropdownButton
+                                        component={<DropdownMenu callback={(event) =>
+                                            setDropdownValue(event.value)
+                                        } />}
+                                        dataTest="dhis2-uicore-dropdownbutton"
+                                        name="default"
+                                        secondary
+                                        large
+                                        value={dropdownValue}
+                                        className="dropdown"
+                                    >
+                                        {dropdownValue}
+                                    </DropdownButton>
 
                                     {workload && (
+
                                       <Table suppressZebraStriping className="workload-table">
                                             <TableBody>
 
@@ -266,7 +263,7 @@ const MyApp = () => {
                         </nav>
                         {tableData && (
                             <main className="main">
-                                <Cases data={tableData} viewContext={dropdownValue} />
+                                <Cases data={tableData} contacts={data.contactCases.trackedEntityInstances} viewContext={dropdownValue} />
                             </main>
                         )}
                     </>

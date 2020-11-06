@@ -3,7 +3,7 @@ import ContactOverlay from './ContactOverlay';
 import CasesTable from './CasesTable';
 
 const Cases = (props) => {
-    const { data, viewContext } = props
+    const { data, viewContext, contacts } = props
     const [entityValues, setEntityValues] = useState([])
     const [showOverlay, setShowOverlay] = useState(false)
     const [relationships, setRelationships] = useState()
@@ -16,6 +16,10 @@ const Cases = (props) => {
         }
 
     }, [data])
+
+    useEffect(() => {
+        console.log("CONTACTS:: ", contacts);
+    }, [contacts])
 
     const reconstructAttributes = (entityInstances) => {
         let entities = []
@@ -43,15 +47,15 @@ const Cases = (props) => {
 
     const findRelationships = (entityIds) => {
         entityIds = JSON.parse(entityIds)
-        console.log("RELATIONSHIPS:: ", data, entityIds);
+        console.log("FINDRELATIONSHIPS:: \n", "CONTACTS: ", contacts, "\nRELATIONSHIPS:: ", entityIds);
         const tmp = []
         entityIds.map(id => {
-            const relatedEntities = data.filter(entity => entity.trackedEntityInstance === id)
-            tmp.push(relatedEntities)
-
+            const relatedEntities = contacts.filter(entity => entity.trackedEntityInstance === id)
+            tmp.push(...relatedEntities)
+            console.log(tmp);
         })
 
-        const reconstructedEntities = reconstructAttributes(tmp.flat(1))
+        const reconstructedEntities = reconstructAttributes(tmp)
         console.log(reconstructedEntities)
         setRelationships(reconstructedEntities)
     }
