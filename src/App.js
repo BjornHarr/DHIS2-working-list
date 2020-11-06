@@ -72,15 +72,18 @@ health status: oqsk2Jv4k3s
 const MyApp = () => {
     const { loading, data } = useDataQuery(query)
     const [workload, setWorkload] = useState()
+
     let d = new Date()
     let c = new Date()
     d.setHours(0, 0, 0, 0)
-    const [startDate, setStartDate] = useState(d);
     c.setHours(2, 3, 5, 9);
+    const [startDate, setStartDate] = useState(d);
     const [endDate, setEndDate] = useState(c);
+
     const [typeError, setTypeError] = useState(false)
     const [tableData, setTableData] = useState()
     const [dropdownValue, setDropdownValue] = useState("Index cases")
+
     registerLocale('en-gb', enGb);
 
     useEffect(() => {
