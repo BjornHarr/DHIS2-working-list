@@ -45,7 +45,8 @@ const query = {
             ouMode: "SELECTED",
             programStatus: "ACTIVE",
             programStage: "sAV9jAajr8x",
-            status: "SCHEDULE"
+            status: "SCHEDULE",
+            order: "dueDate:asc",
         }
     },
     indexEvents: {
@@ -56,13 +57,15 @@ const query = {
             ouMode: "SELECTED",
             programStatus: "ACTIVE",
             programStage: "oqsk2Jv4k3s",
-            status: "SCHEDULE"
+            status: "SCHEDULE",
+            order: "dueDate:asc",
         }
     }
 }
 
 /*
 follow up: sAV9jAajr8x
+lab results: cMEGZf48YkC
 health status: oqsk2Jv4k3s
 */
 
