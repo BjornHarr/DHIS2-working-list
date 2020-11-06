@@ -1,66 +1,46 @@
 This project was bootstrapped with [DHIS2 Application Platform](https://github.com/dhis2/app-platform).
 
-## Setup
-First of, you need to proxy the requests from localhost to the remote dhis2 server.
+## Functionality
 
-1. Install the dhis2-portal CLI.
-```
-npm install --global dhis-portal
-```
+- User chooses a start and an end-date in a calendar.
+- A dropdown lets the user choose whether they would like information regarding Index Cases, Contact cases, or both displayed.
+- A table situated below the drop down will display the number of people to contact in the given the user input in the calendar and drop down.
+- The main table will display “due-date”, first name, last name, phone number, a button that when pressed will display a table showing the contact cases (only displayed if the item is an index case), and a button that will take the user to the case’s profile in the tracker capture app.
+- The table providing information about the contacts related to an index case, will be shown in a layer “above” the rest of the page.
 
-2. Start up the DHIS2 proxy
-```
-dhis-portal --server=course --instance=course --target=‘https://course.dhis2.org/hmis’ --auth="<username>:<password>"
-```
+- The app does show an overview of overview of cases to contact on a particular day (default = today).
+- The user may choose themselves what kind of case (or both) they wish to display.
+- The button to the TCA does make it possible to directly to an individual's TCA-profile.
+- The workload overview is automatically generated based on the interval provided by the user.
 
-Note: Username and password are the login credentials used to log into https://course.dhis2.org/hmis/dhis-web-dashboard/#/. You should have received a mail with login details.
+- The user is provided with information regarding the number of contacts per case as it is written on the button to show contacts.
+- The app does not provide a “sub-view”, but rather a layer that provides the information regarding contacts linked to the same index case.
 
-3. With the dhis-portal proxy still running, start up the application from a new terminal
-```
-yarn start
-```
+## Implementation
 
-4. Log into dhis2
+- Written in React
+- Styled using CSS
+- Mainly used DHIS2 components
+- Calendar is from
+	https://reactdatepicker.com/ 
+- Icons are from 
+	https://fontawesome.com/icons/external-link-alt?style=solid
+	https://fontawesome.com/icons/user-friends?style=solid
+with the following license: https://fontawesome.com/license
 
-Server: http://localhost:9999/
-Username: admin
-password: district
 
-## Available Scripts
 
-In the project directory, you can run:
+## Missing functionality, and suboptimal solutions
 
-### `yarn start`
+- The data we fetch from the DHIS2-API is not live as we fetch it when the user loads the app. In order to refresh the data, the user needs to reload the app. This could prove to be a problem if a lot 
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+## Changes since the first presentation
 
-### `yarn test`
+- Everything is located on the same page.
+- Calendar implementation instead of text input to input dates.
+- Dropped the sub-table to show the contacts related to an index case. Instead we went for a layer, and a table there.
 
-Launches the test runner and runs all available tests found in `/src`.<br />
-
-See the section about [running tests](https://platform.dhis2.nu/#/scripts/test) for more information.
-
-### `yarn build`
-
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.<br />
-A deployable `.zip` file can be found in `build/bundle`!
-
-See the section about [building](https://platform.dhis2.nu/#/scripts/build) for more information.
-
-### `yarn deploy`
-
-Deploys the built app in the `build` folder to a running DHIS2 instance.<br />
-This command will prompt you to enter a server URL as well as the username and password of a DHIS2 user with the App Management authority.<br/>
-You must run `yarn build` before running `yarn deploy`.<br />
-
-See the section about [deploying](https://platform.dhis2.nu/#/scripts/deploy) for more information.
 
 ## Learn More
 
