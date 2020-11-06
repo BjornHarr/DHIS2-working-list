@@ -23,9 +23,19 @@ const CasesTable = (props) => {
     }
 
     const formatDueDate = (dueDate) => {
-        let tmpDate = dueDate.split('T')
-        let newDate = tmpDate[0].toString()
-        return newDate
+        let parsedDate = new Date(dueDate)
+        let now = new Date()
+        parsedDate.setHours(0, 0, 0, 0)
+        now.setHours(0, 0, 0, 0)
+        let dateStyle
+
+        if (parsedDate < now) {
+            dateStyle = "overdue"
+        }
+
+        return (
+            <p className={dateStyle}>{parsedDate.toLocaleDateString()}</p>
+        )
     }
 
     return (
@@ -51,7 +61,7 @@ const CasesTable = (props) => {
                         <TableCellHead>
                             Contacts
                         </TableCellHead>
-                    )} 
+                    )}
                     <TableCellHead>
                         TCA
 </TableCellHead>
@@ -59,7 +69,8 @@ const CasesTable = (props) => {
 
             </TableHead>
             <TableBody>
-                {data.map(el => (
+
+                {sortedData && sortedData.map(el => (
                     <TableRow key={el.trackedEntityInstance}>
                         <TableCell dataTest="details-due-date">
                             {formatDueDate(el.dueDate)}
@@ -76,7 +87,7 @@ const CasesTable = (props) => {
                         <TableCell dataTest="details-first-name">
                             {programMapping[el.program]}
                         </TableCell>
-                        
+
                         {viewContext !== "Contact cases" && (
                             <TableCell dataTest="deta-first-name">
                                 {programMapping[el.program] == "Contact Case" ?
