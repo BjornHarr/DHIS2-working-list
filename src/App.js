@@ -15,7 +15,6 @@ import {
 import enGb from 'date-fns/locale/en-GB';
 import DatePicker, { registerLocale } from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import './components/Workload.css';
 import DropdownMenu from './components/DropdownMenu';
 
 const query = {
