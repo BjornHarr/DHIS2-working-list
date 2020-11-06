@@ -1,11 +1,21 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useConfig } from "@dhis2/app-runtime"
 import { Table, TableHead, TableRowHead, TableCellHead, TableCell, TableRow, TableBody, Button } from '@dhis2/ui';
 
 
 const CasesTable = (props) => {
     const { data, displayOverlay, viewContext } = props
+    const [sortedData, setSortedDate] = useState()
     const { baseUrl } = useConfig()
+
+    useEffect(() => {
+        let tmpSorted = data.sort((a, b) => {
+            const aDate = new Date(a.dueDate)
+            const bDate = new Date(b.dueDate)
+            return aDate - bDate
+        })
+        setSortedDate(tmpSorted)
+    }, [data])
 
     const programMapping = {
         uYjxkTbwRNf: "Index Case",
@@ -22,7 +32,7 @@ const CasesTable = (props) => {
         <Table>
             <TableHead>
                 <TableRowHead>
-                <TableCellHead>
+                    <TableCellHead>
                         Due date
 </TableCellHead>
                     <TableCellHead>
