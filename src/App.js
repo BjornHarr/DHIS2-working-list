@@ -74,8 +74,12 @@ health status: oqsk2Jv4k3s
 const MyApp = () => {
     const { loading, data } = useDataQuery(query)
     const [workload, setWorkload] = useState()
-    const [startDate, setStartDate] = useState(new Date());
-    const [endDate, setEndDate] = useState(new Date());
+    let d = new Date()
+    let c = new Date()
+    d.setHours(0,0,0,0)
+    const [startDate, setStartDate] = useState(d);
+    c.setHours(2,3,5,9);
+    const [endDate, setEndDate] = useState(c);
     const [typeError, setTypeError] = useState(false)
     const [tableData, setTableData] = useState()
     const [dropdownValue, setDropdownValue] = useState("Index cases")
@@ -186,9 +190,9 @@ const MyApp = () => {
 
                                         />
                                     </div>
-                                    
+
                                 <DropdownButton
-                                    component={<DropdownMenu callback={(event) => 
+                                    component={<DropdownMenu callback={(event) =>
                                         setDropdownValue(event.value)
                                     } />}
                                     dataTest="dhis2-uicore-dropdownbutton"
@@ -200,13 +204,13 @@ const MyApp = () => {
                                 >
                                     {dropdownValue}
                                 </DropdownButton>
-                                
+
                                     {workload && (
-                                        
+
                                         <Table suppressZebraStriping className={styles.workloadTable}>
                                             {console.log("wl",workload)}
                                             <TableBody>
-                                                
+
                                                 {(dropdownValue == "Index cases" || dropdownValue == "Both") &&
                                                     <TableRow>
                                                         <TableCell className="left-column">
