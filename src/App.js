@@ -24,8 +24,8 @@ const query = {
             program: "uYjxkTbwRNf",
             ouMode: "SELECTED",
             ou: "iVgNipWEgvE",
-            programStatus: "ACTIVE"
-
+            programStatus: "ACTIVE",
+            paging: false
         }
     },
     contactCases: {
@@ -35,6 +35,7 @@ const query = {
             program: "DM9n1bUw8W8",
             ou: "iVgNipWEgvE",
             ouMode: "SELECTED",
+            paging: false
         }
     },
     contactEvents: {
@@ -47,6 +48,7 @@ const query = {
             programStage: "sAV9jAajr8x",
             status: "SCHEDULE",
             order: "dueDate:asc",
+            paging: false
         }
     },
     indexEvents: {
@@ -59,6 +61,7 @@ const query = {
             programStage: "oqsk2Jv4k3s",
             status: "SCHEDULE",
             order: "dueDate:asc",
+            paging: false
         }
     }
 }
@@ -84,6 +87,7 @@ const MyApp = () => {
     registerLocale('en-gb', enGb);
 
     useEffect(() => {
+        console.log("APP DATA:: ", data);
         calculateWorkload()
     }, [data, endDate])
 
