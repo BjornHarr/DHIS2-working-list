@@ -34,11 +34,6 @@ const Cases = (props) => {
 
     }
 
-    const mergeCases = () => {
-        const merged = data.indexCases.trackedEntityInstances.concat(data.contactCases.trackedEntityInstances)
-        return merged
-    }
-
     const displayOverlay = (event) => {
         findRelationships(event.value)
         setShowOverlay(true)
@@ -46,10 +41,10 @@ const Cases = (props) => {
 
     const findRelationships = (entityIds) => {
         entityIds = JSON.parse(entityIds)
-        const merged = mergeCases()
+        console.log("RELATIONSHIPS:: ", data, entityIds);
         const tmp = []
         entityIds.map(id => {
-            const relatedEntities = merged.filter(entity => entity.trackedEntityInstance === id)
+            const relatedEntities = data.filter(entity => entity.trackedEntityInstance === id)
             tmp.push(relatedEntities)
 
         })
