@@ -20,7 +20,7 @@ const query = {
     indexCases: {
         resource: "trackedEntityInstances",
         params: {
-            fields: "*",
+            fields: "attributes, trackedEntityInstance, enrollments, relationships, programOwners, events",
             program: "uYjxkTbwRNf",
             ouMode: "SELECTED",
             ou: "iVgNipWEgvE",
@@ -31,7 +31,7 @@ const query = {
     contactCases: {
         resource: "trackedEntityInstances",
         params: {
-            fields: "*",
+            fields: "attributes, trackedEntityInstance, enrollments, relationships, programOwners, events",
             program: "DM9n1bUw8W8",
             ou: "iVgNipWEgvE",
             ouMode: "SELECTED",
@@ -40,7 +40,7 @@ const query = {
     contactEvents: {
         resource: "events",
         params: {
-            fields: "*",
+            fields: "trackedEntityInstance, dueDate, program",
             orgUnit: "iVgNipWEgvE",
             ouMode: "SELECTED",
             programStatus: "ACTIVE",
@@ -52,7 +52,7 @@ const query = {
     indexEvents: {
         resource: "events",
         params: {
-            fields: "*",
+            fields: "trackedEntityInstance, dueDate, program",
             orgUnit: "iVgNipWEgvE",
             ouMode: "SELECTED",
             programStatus: "ACTIVE",
