@@ -84,23 +84,16 @@ const MyApp = () => {
     registerLocale('en-gb', enGb);
 
     useEffect(() => {
-        console.log("DATA: ", data);
-    }, [data])
-
-    useEffect(() => {
         calculateWorkload()
-        console.log("enddate: ", endDate);
-    }, [endDate])
+    }, [data, endDate])
 
     useEffect(() => {
-        console.log("WORKLOAD: ", workload);
         if (workload) {
             const teiMatches = []
             const teiFilter = workload.indexCases.concat(workload.contactCases)
             let indexMatches
             let contactMatces
             teiFilter.map(tei => {
-                console.log("DROPDOWNVALUE:: ", dropdownValue);
                 switch (dropdownValue) {
                     case "Index cases":
                         indexMatches = data.indexCases.trackedEntityInstances.filter(entity => entity.trackedEntityInstance === tei)
@@ -140,7 +133,6 @@ const MyApp = () => {
                 total: 0,
             }
             merged.map(event => {
-
                 const dueDate = Date.parse(event.dueDate)
                 if (dueDate >= startEpoch && dueDate <= endEpoch) {
                     if (event.program == "uYjxkTbwRNf") {

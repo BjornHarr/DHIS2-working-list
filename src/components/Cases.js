@@ -9,17 +9,12 @@ const Cases = (props) => {
     const [relationships, setRelationships] = useState()
 
     useEffect(() => {
-        console.log("DATA: ", data)
         if (data) {
             const reconstructedEntities = reconstructAttributes(data)
             setEntityValues(reconstructedEntities)
         }
 
     }, [data])
-
-    useEffect(() => {
-        console.log("CONTACTS:: ", contacts);
-    }, [contacts])
 
     const reconstructAttributes = (entityInstances) => {
         let entities = []
@@ -47,16 +42,13 @@ const Cases = (props) => {
 
     const findRelationships = (entityIds) => {
         entityIds = JSON.parse(entityIds)
-        console.log("FINDRELATIONSHIPS:: \n", "CONTACTS: ", contacts, "\nRELATIONSHIPS:: ", entityIds);
         const tmp = []
         entityIds.map(id => {
             const relatedEntities = contacts.filter(entity => entity.trackedEntityInstance === id)
             tmp.push(...relatedEntities)
-            console.log(tmp);
         })
 
         const reconstructedEntities = reconstructAttributes(tmp)
-        console.log(reconstructedEntities)
         setRelationships(reconstructedEntities)
     }
 
