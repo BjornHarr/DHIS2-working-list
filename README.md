@@ -2,7 +2,7 @@ This project was bootstrapped with [DHIS2 Application Platform](https://github.c
 
 ## Functionality
 
-- User chooses a start and an end-date in a calendar.
+- Calendar lets the user pick a start- and an end-date.
 - A dropdown lets the user choose whether they would like information regarding Index Cases, Contact cases, or both displayed.
 - A table situated below the drop down will display the number of people to contact in the given the user input in the calendar and drop down.
 - The main table will display “due-date”, first name, last name, phone number, a button that when pressed will display a table showing the contact cases (only displayed if the item is an index case), and a button that will take the user to the case’s profile in the tracker capture app.
@@ -40,12 +40,3 @@ with the following license: https://fontawesome.com/license
 - Everything is located on the same page.
 - Calendar implementation instead of text input to input dates.
 - Dropped the sub-table to show the contacts related to an index case. Instead we went for a layer, and a table there.
-
-
-## Learn More
-
-You can learn more about the platform in the [DHIS2 Application Platform Documentation](https://platform.dhis2.nu/).
-
-You can learn more about the runtime in the [DHIS2 Application Runtime Documentation](https://runtime.dhis2.nu/).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
