@@ -164,23 +164,10 @@ const MyApp = () => {
                     <>
                         <nav className="menu" data-test-id="menu">
                             <div className="workload-content">
-                                <h1>Covid-19</h1>
-                                {!typeError &&
-                                    <div className="wrapperP">
-                                        <h4>Workload</h4>
-                                        <p>Choose a start-date and end-date {'\n'} to get the workload</p>
-                                    </div>
-                                }
-                                {typeError &&
-                                    <NoticeBox className="noticeBox"
-                                        dataTest="dhis2-uicore-noticebox"
-                                        title="Velg en sluttdato"
-                                        warning
-                                    >
-                                        Remember to choose a start and end date. {'\n'} Now there's just a start date.
-                                 </NoticeBox>
-                                }
-
+                                <div className="wrapperP">
+                                    <h1>Workload</h1>
+                                    <p>Choose a start-date and end-date {'\n'} to get the workload</p>
+                                </div>
                                 <section className="info-table">
                                     <div className="datePicker">
                                         <DatePicker
@@ -194,59 +181,71 @@ const MyApp = () => {
 
                                         />
                                     </div>
+                                    {typeError &&
+                                        <NoticeBox className="noticeBox"
+                                            dataTest="dhis2-uicore-noticebox"
+                                            title="Velg en sluttdato"
+                                            warning
+                                        >
+                                            Remember to choose a start and end date. {'\n'} Now there's just a start date.
+                                 </NoticeBox>
+                                    }
+                                    {!typeError && (
+                                        <>
+                                            <DropdownButton
+                                                component={<DropdownMenu callback={(event) =>
+                                                    setDropdownValue(event.value)
+                                                } />}
+                                                dataTest="dhis2-uicore-dropdownbutton"
+                                                name="default"
+                                                secondary
+                                                large
+                                                value={dropdownValue}
+                                                className="dropdown"
+                                            >
+                                                {dropdownValue}
+                                            </DropdownButton>
 
-                                    <DropdownButton
-                                        component={<DropdownMenu callback={(event) =>
-                                            setDropdownValue(event.value)
-                                        } />}
-                                        dataTest="dhis2-uicore-dropdownbutton"
-                                        name="default"
-                                        secondary
-                                        large
-                                        value={dropdownValue}
-                                        className="dropdown"
-                                    >
-                                        {dropdownValue}
-                                    </DropdownButton>
+                                            {workload && (
 
-                                    {workload && (
+                                                <Table suppressZebraStriping className="workload-table">
+                                                    <TableBody>
 
-                                      <Table suppressZebraStriping className="workload-table">
-                                            <TableBody>
-
-                                                {(dropdownValue == "Index cases" || dropdownValue == "Both") &&
-                                                    <TableRow>
-                                                        <TableCell className="left-column">
-                                                            Index Cases
+                                                        {(dropdownValue == "Index cases" || dropdownValue == "Both") &&
+                                                            <TableRow>
+                                                                <TableCell className="left-column">
+                                                                    Index Cases
                         </TableCell>
-                                                        <TableCell className="right-column">
-                                                            {workload.indexCases.length}
-                                                        </TableCell>
-                                                    </TableRow>
-                                                }
-                                                {(dropdownValue == "Contact cases" || dropdownValue == "Both") &&
-                                                    <TableRow>
-                                                        <TableCell className="left-column">
-                                                            Contacts
+                                                                <TableCell className="right-column">
+                                                                    {workload.indexCases.length}
+                                                                </TableCell>
+                                                            </TableRow>
+                                                        }
+                                                        {(dropdownValue == "Contact cases" || dropdownValue == "Both") &&
+                                                            <TableRow>
+                                                                <TableCell className="left-column">
+                                                                    Contacts
                         </TableCell>
-                                                        <TableCell className="right-column">
-                                                            {workload.contactCases.length}
-                                                        </TableCell>
+                                                                <TableCell className="right-column">
+                                                                    {workload.contactCases.length}
+                                                                </TableCell>
 
-                                                    </TableRow>
-                                                }
-                                                {dropdownValue == "Both" &&
-                                                    <TableRow>
-                                                        <TableCell className="left-column">
-                                                            Total
+                                                            </TableRow>
+                                                        }
+                                                        {dropdownValue == "Both" &&
+                                                            <TableRow>
+                                                                <TableCell className="left-column">
+                                                                    Total
                         </TableCell>
-                                                        <TableCell className="right-column">
-                                                            {workload.total}
-                                                        </TableCell>
-                                                    </TableRow>
-                                                }
-                                            </TableBody>
-                                        </Table >
+                                                                <TableCell className="right-column">
+                                                                    {workload.total}
+                                                                </TableCell>
+                                                            </TableRow>
+                                                        }
+                                                    </TableBody>
+                                                </Table >
+                                            )
+                                            }</>
                                     )}
                                 </section>
 
