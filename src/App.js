@@ -46,6 +46,7 @@ const query = {
             programStatus: "ACTIVE",
             programStage: "sAV9jAajr8x",
             status: "SCHEDULE",
+            order: "dueDate:asc",
             page: 1,
             totalPages: true
         }
@@ -59,6 +60,7 @@ const query = {
             programStatus: "ACTIVE",
             programStage: "oqsk2Jv4k3s",
             status: "SCHEDULE",
+            order: "dueDate:asc",
             page: 1,
             totalPages: true
         }
@@ -67,6 +69,7 @@ const query = {
 
 /*
 follow up: sAV9jAajr8x
+lab results: cMEGZf48YkC
 health status: oqsk2Jv4k3s
 */
 
