@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useDataQuery } from "@dhis2/app-runtime"
-import styles from './App.module.css';
+import './Styles.css';
 import Cases from './components/Cases';
 import {
     NoticeBox,
@@ -15,7 +15,6 @@ import {
 import enGb from 'date-fns/locale/en-GB';
 import DatePicker, { registerLocale } from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import './components/Workload.css';
 import DropdownMenu from './components/DropdownMenu';
 
 const query = {
@@ -74,8 +73,12 @@ health status: oqsk2Jv4k3s
 const MyApp = () => {
     const { loading, data } = useDataQuery(query)
     const [workload, setWorkload] = useState()
-    const [startDate, setStartDate] = useState(new Date());
-    const [endDate, setEndDate] = useState(new Date());
+    let d = new Date()
+    let c = new Date()
+    d.setHours(0,0,0,0)
+    const [startDate, setStartDate] = useState(d);
+    c.setHours(2,3,5,9);
+    const [endDate, setEndDate] = useState(c);
     const [typeError, setTypeError] = useState(false)
     const [tableData, setTableData] = useState()
     const [dropdownValue, setDropdownValue] = useState("Index cases")
@@ -162,23 +165,23 @@ const MyApp = () => {
     }
 
     return (
-        <div className={styles.container}>
+        <div className="container">
             {loading ? (
                 <CircularLoader dataTest="dhis2-uicore-circularloader" />
 
             ) : (
                     <>
-                        <nav className={styles.menu} data-test-id="menu">
-                            <div className={styles.workloadContent}>
+                        <nav className="menu" data-test-id="menu">
+                            <div className="workload-content">
                                 <h1>Covid-19</h1>
                                 {!typeError &&
-                                    <div className={styles.wrapperP}>
+                                    <div className="wrapperP">
                                         <h4>Workload</h4>
                                         <p>Choose a start-end and end-date {'\n'} to get the workload</p>
                                     </div>
                                 }
                                 {typeError &&
-                                    <NoticeBox className={styles.noticeBox}
+                                    <NoticeBox className="noticeBox"
                                         dataTest="dhis2-uicore-noticebox"
                                         title="Velg en sluttdato"
                                         warning
@@ -187,8 +190,8 @@ const MyApp = () => {
                                  </NoticeBox>
                                 }
 
-                                <section className={styles.infoTable}>
-                                    <div className={styles.datePicker}>
+                                <section className="info-table">
+                                    <div className="datePicker">
                                         <DatePicker
                                             locale="en-gb"
                                             selected={startDate}
@@ -201,24 +204,23 @@ const MyApp = () => {
                                         />
                                     </div>
 
-                                    <DropdownButton
-                                        component={<DropdownMenu callback={(event) =>
-                                            setDropdownValue(event.value)
-                                        } />}
-                                        dataTest="dhis2-uicore-dropdownbutton"
-                                        name="default"
-                                        secondary
-                                        large
-                                        value={dropdownValue}
-                                        className={styles.dropDown}
-                                    >
-                                        {dropdownValue}
-                                    </DropdownButton>
+                                <DropdownButton
+                                    component={<DropdownMenu callback={(event) =>
+                                        setDropdownValue(event.value)
+                                    } />}
+                                    dataTest="dhis2-uicore-dropdownbutton"
+                                    name="default"
+                                    secondary
+                                    large
+                                    value={dropdownValue}
+                                    className="dropdown"
+                                >
+                                    {dropdownValue}
+                                </DropdownButton>
 
                                     {workload && (
-
-                                        <Table suppressZebraStriping className={styles.workloadTable}>
-                                            {console.log("wl", workload)}
+                                      <Table suppressZebraStriping className="workload-table">
+                                            {console.log("wl",workload)}
                                             <TableBody>
 
                                                 {(dropdownValue == "Index cases" || dropdownValue == "Both") &&
@@ -261,7 +263,7 @@ const MyApp = () => {
 
                         </nav>
                         {tableData && (
-                            <main className={styles.main}>
+                            <main className="main">
                                 <Cases data={tableData} viewContext={dropdownValue} />
                             </main>
                         )}

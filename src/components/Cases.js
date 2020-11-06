@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import './Cases.css';
 import ContactOverlay from './ContactOverlay';
 import CasesTable from './CasesTable';
 
