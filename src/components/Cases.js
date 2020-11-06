@@ -30,6 +30,8 @@ const Cases = (props) => {
             })
             tmp.trackedEntityInstance = entity.trackedEntityInstance
             tmp.program = entity.programOwners[0].program
+            let eventsLength = entity.enrollments[0].events.length
+            tmp.dueDate = entity.enrollments[0].events[eventsLength-1].dueDate
             tmp.relationships = entity.relationships.map(relationship => relationship.from.trackedEntityInstance.trackedEntityInstance)
             entities.push(tmp)
             tmp = {}

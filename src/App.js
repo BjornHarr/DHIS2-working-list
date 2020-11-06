@@ -176,7 +176,7 @@ const MyApp = () => {
                                 {!typeError &&
                                     <div className="wrapperP">
                                         <h4>Workload</h4>
-                                        <p>Choose a start-end and end-date {'\n'} to get the workload</p>
+                                        <p>Choose a start-date and end-date {'\n'} to get the workload</p>
                                     </div>
                                 }
                                 {typeError &&
@@ -218,8 +218,8 @@ const MyApp = () => {
                                     </DropdownButton>
 
                                     {workload && (
-                                        <Table suppressZebraStriping className="workload-table">
-                                            {console.log("wl", workload)}
+
+                                      <Table suppressZebraStriping className="workload-table">
                                             <TableBody>
 
                                                 {(dropdownValue == "Index cases" || dropdownValue == "Both") &&
