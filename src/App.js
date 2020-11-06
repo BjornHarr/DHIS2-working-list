@@ -95,15 +95,29 @@ const MyApp = () => {
         if (workload) {
             const teiMatches = []
             const teiFilter = workload.indexCases.concat(workload.contactCases)
+            let indexMatches
+            let contactMatces
             teiFilter.map(tei => {
-                const indexMatches = data.indexCases.trackedEntityInstances.filter(entity => entity.trackedEntityInstance === tei)
-                const contactMatces = data.contactCases.trackedEntityInstances.filter(entity => entity.trackedEntityInstance === tei)
-                teiMatches.push(...indexMatches, ...contactMatces)
+                console.log("DROPDOWNVALUE:: ", dropdownValue);
+                switch (dropdownValue) {
+                    case "Index cases":
+                        indexMatches = data.indexCases.trackedEntityInstances.filter(entity => entity.trackedEntityInstance === tei)
+                        teiMatches.push(...indexMatches)
+                        break;
+                    case "Contact cases":
+                        contactMatces = data.contactCases.trackedEntityInstances.filter(entity => entity.trackedEntityInstance === tei)
+                        teiMatches.push(...contactMatces)
+                        break;
+                    case "Both":
+                        indexMatches = data.indexCases.trackedEntityInstances.filter(entity => entity.trackedEntityInstance === tei)
+                        contactMatces = data.contactCases.trackedEntityInstances.filter(entity => entity.trackedEntityInstance === tei)
+                        teiMatches.push(...indexMatches, ...contactMatces)
+                }
             })
             setTableData(teiMatches)
         }
 
-    }, [workload])
+    }, [workload, dropdownValue])
 
     const onChange = dates => {
         const [start, end] = dates;
@@ -186,27 +200,27 @@ const MyApp = () => {
 
                                         />
                                     </div>
-                                    
-                                <DropdownButton
-                                    component={<DropdownMenu callback={(event) => 
-                                        setDropdownValue(event.value)
-                                    } />}
-                                    dataTest="dhis2-uicore-dropdownbutton"
-                                    name="default"
-                                    secondary
-                                    large
-                                    value={dropdownValue}
-                                    className={styles.dropDown}
-                                >
-                                    {dropdownValue}
-                                </DropdownButton>
-                                
+
+                                    <DropdownButton
+                                        component={<DropdownMenu callback={(event) =>
+                                            setDropdownValue(event.value)
+                                        } />}
+                                        dataTest="dhis2-uicore-dropdownbutton"
+                                        name="default"
+                                        secondary
+                                        large
+                                        value={dropdownValue}
+                                        className={styles.dropDown}
+                                    >
+                                        {dropdownValue}
+                                    </DropdownButton>
+
                                     {workload && (
-                                        
+
                                         <Table suppressZebraStriping className={styles.workloadTable}>
-                                            {console.log("wl",workload)}
+                                            {console.log("wl", workload)}
                                             <TableBody>
-                                                
+
                                                 {(dropdownValue == "Index cases" || dropdownValue == "Both") &&
                                                     <TableRow>
                                                         <TableCell className="left-column">
